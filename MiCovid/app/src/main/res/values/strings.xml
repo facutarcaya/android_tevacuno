@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">MiCovid</string>
+    <string name="edit_message">Ingrese un mensaje</string>
+    <string name="button_send">Enviar</string>
+    <string name="edit_mail">Ingrese su correo</string>
+    <string name="edit_password">Ingrese su contraseña</string>
+    <string name="text_primera_vez">¿Aún no tiene su usuario?</string>
+    <string name="buttonRegistrar">Registrarse</string>
+    <string name="edit_dni">Ingrese su DNI</string>
+    <string name="edit_nombre">Ingrese su nombre</string>
+    <string name="edit_apellido">Ingrese su apellido</string>
+    <string name="button_entrar">ENTRAR</string>
+    <string name="button_cancelar">Cancelar</string>
+    <string name="text_completar_datos_reg">Complete sus datos para registrarse</string>
+</resources>
