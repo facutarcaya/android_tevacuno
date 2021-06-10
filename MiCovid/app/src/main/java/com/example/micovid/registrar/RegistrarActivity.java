@@ -3,6 +3,7 @@ package com.example.micovid.registrar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.micovid.R;
+import com.example.micovid.asincronico.AsincroTaskRegistrar;
 import com.example.micovid.login.LoginActivity;
 
 import java.util.regex.Matcher;
@@ -25,7 +27,10 @@ public class RegistrarActivity extends AppCompatActivity {
     private EditText editTextDni;
     private EditText editTextEmail;
     private EditText editTextPassword;
+    private Button buttonRegistrarse;
+    private Button buttonRegistrarCancelar;
     private String email;
+    private String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +48,9 @@ public class RegistrarActivity extends AppCompatActivity {
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
 
+        buttonRegistrarse = (Button) findViewById(R.id.buttonRegistrarse);
+        buttonRegistrarCancelar = (Button) findViewById(R.id.buttonRegistrarCancelar);
+
         // Get the Intent that started this activity and extract the string
         Intent intent = getIntent();
         String message = intent.getStringExtra(LoginActivity.EXTRA_EMAIL);
@@ -51,15 +59,23 @@ public class RegistrarActivity extends AppCompatActivity {
         editTextEmail.setText(message);
     }
 
+    public void habilitarBotones(boolean status) {
+        this.buttonRegistrarCancelar.setEnabled(status);
+        this.buttonRegistrarse.setEnabled(status);
+    }
+
+    public void cancelar(View view) {
+        finish();
+    }
+
     public void registrarUsuario(View view){
 
         boolean camposCorrectos;
 
-
         camposCorrectos = validarCamposRegistrar();
 
         if (camposCorrectos) {
-            //Pedir patron
+            new AsincroTaskRegistrar(RegistrarActivity.this).execute();
         }
 
     }
@@ -125,12 +141,12 @@ public class RegistrarActivity extends AppCompatActivity {
             editTextEmail.setError( "El email es requerido" );
             camposValidos = false;
         } else {
-            String pattern = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
+            String pattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
             Pattern r = Pattern.compile(pattern);
 
             Matcher m = r.matcher(email);
             if (!m.find()) {
-                editTextEmail.setError( "El email no es válido" );
+                editTextEmail.setError( "El email no es válido");
                 camposValidos = false;
             }
         }
