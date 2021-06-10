@@ -3,6 +3,7 @@ package com.example.micovid.asincronico;
 import android.os.AsyncTask;
 
 import com.example.micovid.actividadprincipal.MainActivity;
+import com.example.micovid.pantallaprincipal.PantallaInicioActivity;
 import com.example.micovid.registrar.RegistrarActivity;
 
 public class AsincroTaskRegistrar extends AsyncTask<Object, Void, Boolean> {
@@ -23,7 +24,12 @@ public class AsincroTaskRegistrar extends AsyncTask<Object, Void, Boolean> {
     protected Boolean doInBackground(Object... objects) {
         try {
             Thread.sleep(2000);
-            return false;
+            String nombre = (String) objects[0];
+            String apellido = (String) objects[1];
+            String dni = (String) objects[2];
+            String email = (String) objects[3];
+            String password = (String) objects[4];
+            return true;
 
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -35,7 +41,7 @@ public class AsincroTaskRegistrar extends AsyncTask<Object, Void, Boolean> {
     protected void onPostExecute(Boolean aBoolean) {
         this.registrarActivity.toggleProgressBar(false);
         if(aBoolean) {
-            this.registrarActivity.lanzarActivity(MainActivity.class);
+            this.registrarActivity.lanzarActivity(PantallaInicioActivity.class);
             this.registrarActivity.showMessage("Datos correctos");
         } else {
             this.registrarActivity.showMessage("Datos incorrectos");

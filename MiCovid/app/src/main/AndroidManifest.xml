@@ -5,13 +5,14 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="App Covid"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MiCovid">
-        <activity android:name=".login.LoginActivity"></activity>
+        <activity android:name=".juego.GameActivity"></activity>
+        <activity android:name=".pantallaprincipal.PantallaInicioActivity" />
+        <activity android:name=".login.LoginActivity" />
         <activity android:name=".registrar.RegistrarActivity" />
-        <activity android:name=".DisplayMessageActivity" />
         <activity android:name=".actividadprincipal.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

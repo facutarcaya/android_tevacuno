@@ -5,9 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 
-import com.example.micovid.DisplayMessageActivity;
 import com.example.micovid.R;
 import com.example.micovid.login.LoginActivity;
 import com.example.micovid.registrar.RegistrarActivity;

@@ -13,4 +13,5 @@
     <string name="button_cancelar">Cancelar</string>
     <string name="text_completar_datos_reg">Complete sus datos para registrarse</string>
     <string name="button_login">Iniciar sesión</string>
+    <string name="button_jugar">Jugar</string>
 </resources>

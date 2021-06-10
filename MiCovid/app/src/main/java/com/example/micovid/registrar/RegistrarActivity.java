@@ -1,5 +1,7 @@
 package com.example.micovid.registrar;
 
+import android.app.KeyguardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -20,6 +22,7 @@ import java.util.regex.Pattern;
 public class RegistrarActivity extends AppCompatActivity {
 
     public static final String EXTRA_EMAIL = "com.example.micovid.EMAIL_REGISTRAR";
+    private static final int CREDENTIALS_RESULT = 4342;
 
     private ProgressBar progressBar;
     private EditText editTextNombre;
@@ -29,6 +32,9 @@ public class RegistrarActivity extends AppCompatActivity {
     private EditText editTextPassword;
     private Button buttonRegistrarse;
     private Button buttonRegistrarCancelar;
+    private String nombre;
+    private String apellido;
+    private String dni;
     private String email;
     private String password;
 
@@ -36,6 +42,8 @@ public class RegistrarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrar);
+
+        checkCredentials();
 
         //Inicio de variables
         progressBar = findViewById(R.id.progressBar);
@@ -75,7 +83,7 @@ public class RegistrarActivity extends AppCompatActivity {
         camposCorrectos = validarCamposRegistrar();
 
         if (camposCorrectos) {
-            new AsincroTaskRegistrar(RegistrarActivity.this).execute();
+            new AsincroTaskRegistrar(RegistrarActivity.this).execute(this.nombre,this.apellido,this.dni,this.email,this.password);
         }
 
     }
@@ -103,29 +111,31 @@ public class RegistrarActivity extends AppCompatActivity {
         boolean camposValidos = true;
 
 
-        String nombre = editTextNombre.getText().toString();
+        this.nombre = editTextNombre.getText().toString();
 
-        if (nombre.trim().equals("")) {
+        if (this.nombre.trim().equals("")) {
             editTextNombre.setError( "El nombre es requerido" );
             camposValidos = false;
         }
 
-        String apellido = editTextApellido.getText().toString();
+        this.apellido = editTextApellido.getText().toString();
 
-        if (apellido.isEmpty()) {
+        if (this.apellido.isEmpty()) {
             editTextApellido.setError( "El apellido es requerido" );
             camposValidos = false;
         }
 
-        int dni = 0;
+        int dniNum = 0;
 
-        if(editTextDni.getText().toString().isEmpty()) {
+        this.dni = editTextDni.getText().toString();
+
+        if(this.dni.isEmpty()) {
             editTextDni.setError( "El DNI es requerido" );
             camposValidos = false;
         } else {
             try {
-                dni = Integer.parseInt(editTextDni.getText().toString());
-                if (dni < 10000000 || dni > 99999999) {
+                dniNum = Integer.parseInt(editTextDni.getText().toString());
+                if (dniNum < 10000000 || dniNum > 99999999) {
                     editTextDni.setError( "El DNI no es válido" );
                     camposValidos = false;
                 }
@@ -151,13 +161,38 @@ public class RegistrarActivity extends AppCompatActivity {
             }
         }
 
-        String password = editTextPassword.getText().toString();
+        this.password = editTextPassword.getText().toString();
 
-        if (password.length() < 8) {
+        if (this.password.length() < 8) {
             editTextPassword.setError( "La contraseña debe ser de mínimo 8 caracteres" );
             camposValidos = false;
         }
 
         return camposValidos;
+    }
+
+    public void checkCredentials() {
+        KeyguardManager keyguardManager = (KeyguardManager) this.getSystemService(Context.KEYGUARD_SERVICE);
+        Intent credentialsIntent = keyguardManager.createConfirmDeviceCredentialIntent("Confirmá para continuar", "");
+        if (credentialsIntent != null) {
+            startActivityForResult(credentialsIntent, CREDENTIALS_RESULT);
+        } else {
+            //no password needed
+            Toast.makeText(this,"Credenciales correctas",Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CREDENTIALS_RESULT) {
+            if(resultCode == RESULT_OK) {
+                //hoorray!
+                Toast.makeText(this,"Credenciales correctas",Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this,"Credenciales incorrectas",Toast.LENGTH_LONG).show();
+                finish();
+            }
+        }
     }
 }

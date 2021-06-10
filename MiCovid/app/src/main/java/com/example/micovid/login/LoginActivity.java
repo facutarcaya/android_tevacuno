@@ -2,10 +2,8 @@ package com.example.micovid.login;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.AlertDialog;
 import android.app.KeyguardManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,11 +12,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.micovid.DisplayMessageActivity;
 import com.example.micovid.R;
-import com.example.micovid.actividadprincipal.MainActivity;
 import com.example.micovid.asincronico.AsincroTaskLogin;
-import com.example.micovid.asincronico.AsincroTaskRegistrar;
 import com.example.micovid.registrar.RegistrarActivity;
 
 import java.util.regex.Matcher;
@@ -42,6 +37,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        checkCredentials();
 
         //Inicio de variables
         progressBarLogin = (ProgressBar) findViewById(R.id.progressBarLogin);
@@ -71,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
         camposCorrectos = validarCamposRegistrar();
 
         if (camposCorrectos) {
-            new AsincroTaskLogin(LoginActivity.this).execute();
+            new AsincroTaskLogin(LoginActivity.this).execute(this.email,this.password);
         }
     }
 
@@ -131,26 +128,6 @@ public class LoginActivity extends AppCompatActivity {
         return camposValidos;
     }
 
-    /*
-    public void alertarRegistrar(View view) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-
-        alertDialogBuilder.setTitle("Registrarse");
-        alertDialogBuilder.setMessage("¿Está seguro que desea registrarse?");
-        alertDialogBuilder.setCancelable(true);
-
-        alertDialogBuilder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface arg0, int arg1) {
-                finish();
-                checkCredentials();
-            }
-        });
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-    }
-
     public void checkCredentials() {
         KeyguardManager keyguardManager = (KeyguardManager) this.getSystemService(Context.KEYGUARD_SERVICE);
         Intent credentialsIntent = keyguardManager.createConfirmDeviceCredentialIntent("Confirmá para continuar", "");
@@ -158,21 +135,7 @@ public class LoginActivity extends AppCompatActivity {
             startActivityForResult(credentialsIntent, CREDENTIALS_RESULT);
         } else {
             //no password needed
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-
-            alertDialogBuilder.setTitle("No contra");
-            alertDialogBuilder.setMessage("¿Está seguro que desea registrarse?");
-            alertDialogBuilder.setCancelable(true);
-
-            alertDialogBuilder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface arg0, int arg1) {
-                    finish();
-                }
-            });
-
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
+            Toast.makeText(this,"Credenciales correctas",Toast.LENGTH_LONG).show();
         }
     }
 
@@ -182,39 +145,11 @@ public class LoginActivity extends AppCompatActivity {
         if (requestCode == CREDENTIALS_RESULT) {
             if(resultCode == RESULT_OK) {
                 //hoorray!
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-
-                alertDialogBuilder.setTitle("Contra bien");
-                alertDialogBuilder.setMessage("¿Está seguro que desea registrarse?");
-                alertDialogBuilder.setCancelable(true);
-
-                alertDialogBuilder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        finish();
-                    }
-                });
-
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
+                Toast.makeText(this,"Credenciales correctas",Toast.LENGTH_LONG).show();
             } else {
-                //uh-oh
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-
-                alertDialogBuilder.setTitle("ERROR");
-                alertDialogBuilder.setMessage("¿Está seguro que desea registrarse?");
-                alertDialogBuilder.setCancelable(true);
-
-                alertDialogBuilder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        finish();
-                    }
-                });
-
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
+                Toast.makeText(this,"Credenciales incorrectas",Toast.LENGTH_LONG).show();
+                finish();
             }
         }
-    }*/
+    }
 }
