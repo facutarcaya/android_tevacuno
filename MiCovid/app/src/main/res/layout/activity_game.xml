@@ -4,26 +4,63 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:screenOrientation="portrait"
     tools:context=".juego.GameActivity">
 
+
     <ImageView
-        android:id="@+id/imageViewJeringaRoja"
-        android:layout_width="114dp"
-        android:layout_height="190dp"
+        android:id="@+id/imageViewFondo"
+        android:layout_width="413dp"
+        android:layout_height="734dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/vacuna_roja_png" />
+        app:srcCompat="@drawable/doctor_fondo" />
+
+    <Button
+        android:id="@+id/buttonMas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:onClick="rotarMas"
+        android:text="+"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageView
-        android:id="@+id/imageViewJeringaVerde"
-        android:layout_width="113dp"
-        android:layout_height="190dp"
-        android:layout_marginStart="13dp"
-        android:layout_marginTop="32dp"
-        android:rotation="46"
-        app:layout_constraintStart_toStartOf="@+id/imageViewJeringaRoja"
-        app:layout_constraintTop_toTopOf="@+id/imageViewJeringaRoja"
-        app:srcCompat="@drawable/vacuna_verde_png" />
+        android:id="@+id/imageViewVacunaVerde"
+        android:layout_width="144dp"
+        android:layout_height="133dp"
+        android:rotation="90"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/vaccine_verde" />
+
+    <ImageView
+        android:id="@+id/imageViewVacunaRoja"
+        android:layout_width="146dp"
+        android:layout_height="131dp"
+        android:rotation="90"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/vaccine_roja" />
+
+    <Button
+        android:id="@+id/buttonMenos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="24dp"
+        android:onClick="rotarMenos"
+        android:text="-"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
