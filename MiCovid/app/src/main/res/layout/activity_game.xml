@@ -7,17 +7,6 @@
     tools:context=".juego.GameActivity">
 
 
-    <Button
-        android:id="@+id/buttonMas"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
-        android:onClick="rotarMas"
-        android:text="+"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
     <ImageView
         android:id="@+id/imageViewVacunaRoja"
         android:layout_width="146dp"
@@ -32,26 +21,15 @@
 
     <ImageView
         android:id="@+id/imageViewVacunaVerde"
-        android:alpha="0.4"
         android:layout_width="144dp"
         android:layout_height="133dp"
+        android:alpha="0.4"
         android:rotation="90"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/vaccine_verde" />
-
-    <Button
-        android:id="@+id/buttonMenos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="24dp"
-        android:onClick="rotarMenos"
-        android:text="-"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textViewPuntuacion1"
@@ -60,6 +38,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginBottom="90dp"
         android:text="@string/text_puntuacion"
+        android:textSize="34sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -71,8 +50,52 @@
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="90dp"
         android:text="0"
+        android:textSize="34sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textViewPuntuacion1" />
+
+    <ImageView
+        android:id="@+id/imageViewGrayBack"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="0.5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/gray_background" />
+
+    <ImageView
+        android:id="@+id/imageViewCountDown"
+        android:layout_width="82dp"
+        android:layout_height="89dp"
+        android:layout_marginTop="200dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageViewGrayBack"
+        app:srcCompat="@drawable/number3_png" />
+
+    <ImageView
+        android:id="@+id/imageViewNumber1"
+        android:layout_width="60dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="144dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/number6_png" />
+
+    <ImageView
+        android:id="@+id/imageViewNumber2"
+        android:layout_width="60dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toEndOf="@+id/imageViewNumber1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/number0_png" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,19 +2,25 @@ package com.example.micovid.juego;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.content.res.Resources;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.micovid.R;
-import com.example.micovid.asincronico.AsincroTaskLogin;
 import com.example.micovid.asincronico.AsincroTaskVerificarPos;
-import com.example.micovid.login.LoginActivity;
+import com.example.micovid.registrar.RegistrarActivity;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -40,8 +46,36 @@ public class GameActivity extends AppCompatActivity {
         this.imageViewVacunaRoja = findViewById(R.id.imageViewVacunaRoja);
         this.textViewPuntuacion2 = findViewById(R.id.textViewPuntuacion2);
 
+        this.imageViewNumber1.setVisibility(View.INVISIBLE);
+        this.imageViewNumber2.setVisibility(View.INVISIBLE);
+
+        countdown = 3;
+        juegoIniciado = false;
+        juegoDetenido = false;
+
+        this.mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
+        this.mGyro = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+        if (this.mGyro != null) {
+            mSensorManager.registerListener(this, mGyro, SensorManager.SENSOR_DELAY_NORMAL);
+        } else {
+            Log.d("ERROR","GYRO NO SOPORTADO");
+        }
+
+        puntuacion = 0;
+        validando = false;
+        valorXprevio = 0;
+        valorYprevio = 0;
+
+
         reiniciarPos();
         actualizarPuntuacion();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mSensorManager.registerListener(this, mGyro, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     public void rotarMas(View view) {
@@ -52,7 +86,7 @@ public class GameActivity extends AppCompatActivity {
         rotateImage(-5);
     }
 
-    public void rotateImage(int degrees) {
+    public void rotateImage(float degrees) {
         if (anguloActual + degrees > 90 || anguloActual + degrees < -90) {
             degrees = 0;
         }
@@ -132,4 +166,90 @@ public class GameActivity extends AppCompatActivity {
         new AsincroTaskVerificarPos(GameActivity.this).execute();
     }
 
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+
+        if (juegoIniciado && !juegoDetenido) {
+
+            if (countdown == SEGUNDOS_MAXIMOS) {
+                Resources res = getResources();
+                this.imageViewNumber1.setImageResource(res.getIdentifier("number" + (countdown/10) + "_png" , "drawable", getPackageName()));
+                this.imageViewNumber2.setImageResource(res.getIdentifier("number" + (countdown%10) + "_png" , "drawable", getPackageName()));
+                segundos = System.currentTimeMillis();
+                countdown--;
+            } else if(System.currentTimeMillis() - segundos >= 1000) {
+                if(countdown < 0) {
+                    detenerJuego();
+                } else {
+                    Resources res = getResources();
+                    this.imageViewNumber1.setImageResource(res.getIdentifier("number" + (countdown/10) + "_png" , "drawable", getPackageName()));
+                    this.imageViewNumber2.setImageResource(res.getIdentifier("number" + (countdown%10) + "_png" , "drawable", getPackageName()));
+                    countdown--;
+                }
+                segundos = System.currentTimeMillis();
+            }
+
+            Sensor sensor = sensorEvent.sensor;
+
+            if(sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+
+                valorXactual = sensorEvent.values[0];
+                valorYactual = sensorEvent.values[1];
+
+                if (valorXprevio == 0 && valorYprevio == 0) {
+                    valorXprevio = valorXactual;
+                    valorYprevio = valorXactual;
+                } else {
+                    if( valorXactual < valorXprevio ) {
+                        rotateImage((float) (Math.abs( valorXactual - valorXprevio ) * 10.0 * 1.5));
+                    } else {
+                        rotateImage((float) (Math.abs( valorXactual - valorXprevio ) * -10.0 * 1.5));
+                    }
+
+                    valorXprevio = valorXactual;
+                    valorYprevio = valorXactual;
+
+                }
+            }
+        } else if (!juegoDetenido && !juegoIniciado){
+            if(countdown == 3) {
+                segundos = System.currentTimeMillis();
+                countdown--;
+            } else if(System.currentTimeMillis() - segundos >= 1000) {
+                if(countdown == 0) {
+                    iniciarJuego();
+                } else {
+                    Resources res = getResources();
+                    this.imageViewCountDown.setImageResource(res.getIdentifier("number" + countdown + "_png" , "drawable", getPackageName()));
+                    countdown--;
+                }
+                segundos = System.currentTimeMillis();
+            }
+        }
+
+    }
+
+    public void iniciarJuego() {
+        this.imageViewCountDown.setVisibility(View.GONE);
+        this.imageViewGrayBack.setVisibility(View.GONE);
+        this.imageViewNumber1.setVisibility(View.VISIBLE);
+        this.imageViewNumber2.setVisibility(View.VISIBLE);
+        juegoIniciado = true;
+        juegoDetenido = false;
+        countdown = SEGUNDOS_MAXIMOS;
+    }
+
+    public void detenerJuego() {
+        juegoIniciado = false;
+        juegoDetenido = true;
+
+        Intent intent = new Intent(this, GameOverActivity.class);
+        intent.putExtra(EXTRA_PUNTUACION, String.valueOf(this.puntuacion));
+        startActivity(intent);
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
+    }
 }

@@ -15,4 +15,6 @@
     <string name="button_login">Iniciar sesión</string>
     <string name="button_jugar">Jugar</string>
     <string name="text_puntuacion">Puntuación:</string>
+    <string name="text_felicitaciones">¡Felicitaciones!</string>
+    <string name="text_dosis_aplicadas">Dosis aplicadas</string>
 </resources>
