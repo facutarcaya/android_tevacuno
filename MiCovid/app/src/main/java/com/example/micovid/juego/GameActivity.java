@@ -22,29 +22,53 @@ import com.example.micovid.R;
 import com.example.micovid.asincronico.AsincroTaskVerificarPos;
 import com.example.micovid.registrar.RegistrarActivity;
 
-public class GameActivity extends AppCompatActivity {
+import org.w3c.dom.Text;
+
+public class GameActivity extends AppCompatActivity implements SensorEventListener {
 
     private static final int POS_MINIMA = -5;
     private static final int POS_MAXIMA = 5;
+    private static final int SEGUNDOS_MAXIMOS = 60;
+    public static final String EXTRA_PUNTUACION = "com.example.micovid.GAME_PUNTUACION";
+
     private RotateAnimation rotateAnimation;
     private TextView textViewPuntuacion2;
     private ImageView imageViewVacunaVerde;
     private ImageView imageViewVacunaRoja;
+    private ImageView imageViewGrayBack;
+    private ImageView imageViewCountDown;
+    private ImageView imageViewNumber1;
+    private ImageView imageViewNumber2;
+
     private float anguloActual;
     private int puntuacion;
     public boolean validando;
+    private boolean juegoIniciado;
+    private boolean juegoDetenido;
+    private int countdown;
+    private long segundos;
+
+    private SensorManager mSensorManager;
+    private Sensor mGyro;
+
+    private float valorXprevio;
+    private float valorXactual;
+    private float valorYprevio;
+    private float valorYactual;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        puntuacion = 0;
-        validando = false;
-
         this.imageViewVacunaVerde = findViewById(R.id.imageViewVacunaVerde);
         this.imageViewVacunaRoja = findViewById(R.id.imageViewVacunaRoja);
         this.textViewPuntuacion2 = findViewById(R.id.textViewPuntuacion2);
+        this.imageViewGrayBack = findViewById(R.id.imageViewGrayBack);
+        this.imageViewCountDown = findViewById(R.id.imageViewCountDown);
+        this.imageViewNumber1 = findViewById(R.id.imageViewNumber1);
+        this.imageViewNumber2 = findViewById(R.id.imageViewNumber2);
 
         this.imageViewNumber1.setVisibility(View.INVISIBLE);
         this.imageViewNumber2.setVisibility(View.INVISIBLE);
