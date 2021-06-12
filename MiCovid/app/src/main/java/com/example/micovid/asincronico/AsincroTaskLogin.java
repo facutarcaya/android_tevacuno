@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.micovid.actividadprincipal.MainActivity;
 import com.example.micovid.login.LoginActivity;
+import com.example.micovid.pantallaprincipal.PantallaInicioActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -109,7 +110,7 @@ public class AsincroTaskLogin extends AsyncTask<Object, Void, Boolean> {
     protected void onPostExecute(Boolean aBoolean) {
         this.loginActivity.toggleProgressBar(false);
         if(aBoolean) {
-            this.loginActivity.lanzarActivity(MainActivity.class);
+            this.loginActivity.lanzarActivity(PantallaInicioActivity.class);
             this.loginActivity.showMessage("Datos correctos");
         } else {
             this.loginActivity.showMessage("Datos incorrectos");
