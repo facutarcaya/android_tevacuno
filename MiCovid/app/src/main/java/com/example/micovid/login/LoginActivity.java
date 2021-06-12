@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.micovid.R;
@@ -29,7 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText editTextLoginPassword;
     private Button buttonLoginCancelar;
     private Button buttonLoginLogin;
-    private Button buttonRegistrarInicio;
+    private TextView buttonRegistrarInicio;
     private String email;
     private String password;
 
@@ -46,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         editTextLoginPassword = (EditText) findViewById(R.id.editTextLoginPassword);
         buttonLoginCancelar = (Button) findViewById(R.id.buttonLoginCancelar);
         buttonLoginLogin = (Button) findViewById(R.id.buttonLoginLogin);
-        buttonRegistrarInicio = (Button) findViewById(R.id.buttonRegistrarInicio);
+        buttonRegistrarInicio = (TextView) findViewById(R.id.textViewMessage1);
 
         toggleProgressBar(false);
     }

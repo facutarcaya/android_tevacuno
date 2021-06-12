@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".login.LoginActivity">
 
+    <TextView
+        android:id="@+id/textViewCompleteDatos2"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:layout_marginTop="64dp"
+        android:text="@string/LoginTitle"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ProgressBar
         android:id="@+id/progressBarLogin"
         style="?android:attr/progressBarStyle"
@@ -19,19 +31,20 @@
 
     <Button
         android:id="@+id/buttonLoginCancelar"
+        style="@style/ButtonClass"
         android:layout_width="0dp"
         android:layout_height="47dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="32dp"
         android:backgroundTint="#FFF"
         android:onClick="cancelar"
         android:text="@string/button_cancelar"
         android:textColor="#000"
-        app:layout_constraintEnd_toStartOf="@+id/buttonLoginLogin"
-        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextLoginPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonLoginLogin" />
 
     <EditText
         android:id="@+id/editTextLoginEmail"
@@ -65,39 +78,31 @@
 
     <Button
         android:id="@+id/buttonLoginLogin"
+        style="@style/ButtonClass"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="40dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginEnd="32dp"
         android:onClick="loginUsuario"
         android:text="@string/button_login"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextLoginPassword" />
-
-    <Button
-        android:id="@+id/buttonRegistrarInicio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:onClick="inicioRegistrar"
-        android:text="@string/buttonRegistrar"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextLoginPassword" />
 
     <TextView
         android:id="@+id/textViewMessage1"
         android:layout_width="0dp"
         android:layout_height="51dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
         android:gravity="center"
+        android:onClick="inicioRegistrar"
         android:text="@string/text_primera_vez"
         android:textAlignment="textEnd"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/buttonRegistrarInicio"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

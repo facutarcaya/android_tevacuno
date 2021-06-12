@@ -6,17 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".registrar.RegistrarActivity">
 
-    <ImageView
-        android:id="@+id/imageViewUsersIcon"
-        android:layout_width="87dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="24dp"
-        android:background="@android:color/transparent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/user_icon" />
-
     <TextView
         android:id="@+id/textViewPassword"
         android:layout_width="90dp"
@@ -136,14 +125,17 @@
 
     <Button
         android:id="@+id/buttonRegistrarse"
+        style="@style/ButtonClass"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="40dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
         android:onClick="registrarUsuario"
         android:text="@string/buttonRegistrar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextPassword" />
 
     <EditText
         android:id="@+id/editTextPassword"
@@ -161,29 +153,30 @@
 
     <Button
         android:id="@+id/buttonRegistrarCancelar"
-        android:layout_width="141dp"
+        style="@style/ButtonClass"
+        android:layout_width="0dp"
         android:layout_height="47dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="19dp"
+        android:layout_marginEnd="32dp"
         android:backgroundTint="#FFF"
         android:onClick="cancelar"
         android:text="@string/button_cancelar"
         android:textColor="#000"
-        app:layout_constraintEnd_toStartOf="@+id/buttonRegistrarse"
-        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonRegistrarse" />
 
     <TextView
         android:id="@+id/textViewCompleteDatos"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="75dp"
         android:text="@string/text_completar_datos_reg"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewUsersIcon" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ProgressBar
         android:id="@+id/progressBar"
