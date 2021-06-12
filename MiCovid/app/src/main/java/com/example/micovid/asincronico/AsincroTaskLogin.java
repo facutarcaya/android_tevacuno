@@ -35,8 +35,8 @@ public class AsincroTaskLogin extends AsyncTask<Object, Void, Boolean> {
         JSONObject object = new JSONObject();
         String result = null;
         try {
-            object.put("email", "snalbarracin@gmail.com");
-            object.put("password", "Hola1234");
+            object.put("email", objects[0]);
+            object.put("password", objects[1]);
 
 
             URL url = new URL("http://so-unlam.net.ar/api/api/login");
@@ -57,11 +57,12 @@ public class AsincroTaskLogin extends AsyncTask<Object, Void, Boolean> {
             connection.connect();
 
             int responseCode = connection.getResponseCode();
-
+            Log.i("debug166", String.valueOf(responseCode));
             if (responseCode == HttpURLConnection.HTTP_OK || responseCode == HttpURLConnection.HTTP_CREATED) {
 
                 InputStreamReader inputStreamReader = new InputStreamReader(connection.getInputStream());
                 result = convertInputStreamToString(inputStreamReader).toString();
+
 
             } else if (responseCode == HttpURLConnection.HTTP_BAD_REQUEST) {
 
@@ -79,7 +80,7 @@ public class AsincroTaskLogin extends AsyncTask<Object, Void, Boolean> {
 
             result = answer.get("success").toString();
 
-            Log.i("debug166", result);
+            Log.i("debug166", "entre");
         } catch (JSONException | IOException e) {
             Log.i("debug104", String.valueOf(e));
             e.printStackTrace();

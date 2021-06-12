@@ -41,12 +41,15 @@ public class AsincroTaskRegistrar extends AsyncTask<Object, Void, Boolean> {
             String dni = (String) objects[2];
             String email = (String) objects[3];
             String password = (String) objects[4];
-            object.put("nombre",nombre);
-            object.put("nombre",apellido);
-            object.put("nombre",dni);
-            object.put("nombre",email);
-            object.put("nombre",password);
-            URL url = new URL("http://so-unlam.net.ar/api/api/login");
+            object.put("env","PROD");
+            object.put("name",nombre);
+            object.put("lastname",apellido);
+            object.put("dni",Integer.parseInt(dni));
+            object.put("email",email);
+            object.put("password",password);
+            object.put("commission",3900);
+            object.put("group",5);
+            URL url = new URL("http://so-unlam.net.ar/api/api/register");
             HttpURLConnection connection;
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
@@ -64,7 +67,7 @@ public class AsincroTaskRegistrar extends AsyncTask<Object, Void, Boolean> {
             connection.connect();
 
             int responseCode = connection.getResponseCode();
-
+            Log.i("debug104", String.valueOf(responseCode));
             if (responseCode == HttpURLConnection.HTTP_OK || responseCode == HttpURLConnection.HTTP_CREATED) {
 
                 InputStreamReader inputStreamReader = new InputStreamReader(connection.getInputStream());
