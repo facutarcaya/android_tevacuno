@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.micovid">
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -9,9 +10,10 @@
         android:label="App Covid"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.MiCovid">
-        <activity android:name=".juego.GameOverActivity"></activity>
+        android:theme="@style/Theme.MiCovid"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".renovartoken.RefreshTokenActivity"></activity>
+        <activity android:name=".juego.GameOverActivity" />
         <activity
             android:name=".juego.GameActivity"
             android:screenOrientation="portrait" />

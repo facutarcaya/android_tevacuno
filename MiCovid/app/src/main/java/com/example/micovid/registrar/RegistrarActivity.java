@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.micovid.R;
+import com.example.micovid.actividadprincipal.Usuario;
 import com.example.micovid.asincronico.AsincroTaskRegistrar;
 import com.example.micovid.login.LoginActivity;
 
@@ -96,7 +97,7 @@ public class RegistrarActivity extends AppCompatActivity {
         }
     }
 
-    public void lanzarActivity(Class<?> tipoActividad) {
+    public void lanzarActivity(Class<?> tipoActividad, Usuario usuario) {
         Intent intent = new Intent(this,tipoActividad);
         intent.putExtra(EXTRA_EMAIL, this.email);
         startActivity(intent);

@@ -1,44 +1,42 @@
 package com.example.micovid.asincronico;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.example.micovid.actividadprincipal.Usuario;
 import com.example.micovid.comm.Communication;
 import com.example.micovid.pantallaprincipal.PantallaInicioActivity;
 import com.example.micovid.registrar.RegistrarActivity;
+import com.example.micovid.renovartoken.RefreshTokenActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
-public class AsincroTaskRegistrar extends AsyncTask<Object, Void, Boolean> {
-    private RegistrarActivity registrarActivity;
+public class AsincroTaskRefresh extends AsyncTask<Object, Void, Boolean> {
+    private RefreshTokenActivity refreshTokenActivity;
     private String mensaje;
-    private Usuario usuario;
+    private String token;
+    private String tokenRefresh;
 
 
-    public AsincroTaskRegistrar(RegistrarActivity registrarActivity) {
-        this.registrarActivity = registrarActivity;
+    public AsincroTaskRefresh(RefreshTokenActivity refreshTokenActivity) {
+        this.refreshTokenActivity = refreshTokenActivity;
     }
 
     @Override
     protected void onPreExecute() {
-        this.registrarActivity.toggleProgressBar(true);
-        this.registrarActivity.habilitarBotones(false);
+        //this.refreshTokenActivity.toggleProgressBar(true);
+        //this.refreshTokenActivity.habilitarBotones(false);
     }
 
     @Override
     protected Boolean doInBackground(Object... objects) {
         Communication communication = new Communication();
 
-        String respuesta = communication.registrarUsuario(objects[0].toString(),objects[1].toString(),objects[2].toString(),objects[3].toString(),objects[4].toString());
+        String respuesta = communication.refrescarToken(objects[0].toString());
 
         if(respuesta.compareTo(communication.MSG_ERROR) == 0) {
             this.mensaje = "Error en la conexión, intente de nuevo más tarde";
@@ -50,7 +48,8 @@ public class AsincroTaskRegistrar extends AsyncTask<Object, Void, Boolean> {
             answer = new JSONObject(respuesta);
 
             if (answer.get("success").toString().compareTo("true") == 0) {
-                this.usuario = new Usuario(objects[3].toString(),answer.get("token").toString(),answer.get("token_refresh").toString());
+                this.token = answer.get("token").toString();
+                this.tokenRefresh = answer.get("token_refresh").toString();
 
                 return true;
             } else {
@@ -76,13 +75,13 @@ public class AsincroTaskRegistrar extends AsyncTask<Object, Void, Boolean> {
     }
     @Override
     protected void onPostExecute(Boolean aBoolean) {
-        this.registrarActivity.toggleProgressBar(false);
+        //this.refreshTokenActivity.toggleProgressBar(false);
         if(aBoolean) {
-            this.registrarActivity.lanzarActivity(PantallaInicioActivity.class, this.usuario);
-            this.registrarActivity.showMessage("Datos correctos");
+            //this.registrarActivity.lanzarActivity(PantallaInicioActivity.class, this.usuario);
+            this.refreshTokenActivity.showMessage("Datos correctos");
         } else {
-            this.registrarActivity.habilitarBotones(true);
-            this.registrarActivity.showMessage(this.mensaje);
+            //this.refreshTokenActivity.habilitarBotones(true);
+            this.refreshTokenActivity.showMessage(this.mensaje);
         }
         super.onPostExecute(aBoolean);
     }

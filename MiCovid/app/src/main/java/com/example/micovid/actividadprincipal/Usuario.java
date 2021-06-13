@@ -1,5 +1,7 @@
 package com.example.micovid.actividadprincipal;
 
+import com.example.micovid.comm.Communication;
+
 public class Usuario {
 
     private String email;
@@ -12,10 +14,8 @@ public class Usuario {
         this.tokenRefresh = tokenRefresh;
     }
 
-    public void refrescarToken() {
-        String nuevoTokenRefesh = "NADA";
-        //Llamar API REST
-
-        this.tokenRefresh = nuevoTokenRefesh;
+    public void refrescarToken(String token, String tokenRefresh) {
+        this.token = token;
+        this.tokenRefresh = tokenRefresh;
     }
 }

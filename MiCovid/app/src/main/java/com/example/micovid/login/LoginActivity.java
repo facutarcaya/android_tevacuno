@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.micovid.R;
+import com.example.micovid.actividadprincipal.Usuario;
 import com.example.micovid.asincronico.AsincroTaskLogin;
 import com.example.micovid.registrar.RegistrarActivity;
 
@@ -80,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public void lanzarActivity(Class<?> tipoActividad) {
+    public void lanzarActivity(Class<?> tipoActividad, Usuario usuario) {
         Intent intent = new Intent(this,tipoActividad);
         intent.putExtra(EXTRA_EMAIL, this.email);
         startActivity(intent);

@@ -4,6 +4,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.micovid.actividadprincipal.MainActivity;
+import com.example.micovid.actividadprincipal.Usuario;
+import com.example.micovid.comm.Communication;
 import com.example.micovid.login.LoginActivity;
 import com.example.micovid.pantallaprincipal.PantallaInicioActivity;
 
@@ -19,6 +21,8 @@ import java.net.URL;
 
 public class AsincroTaskLogin extends AsyncTask<Object, Void, Boolean> {
     private LoginActivity loginActivity;
+    private String mensaje;
+    private Usuario usuario;
 
 
     public AsincroTaskLogin(LoginActivity loginActivity) {
@@ -33,67 +37,34 @@ public class AsincroTaskLogin extends AsyncTask<Object, Void, Boolean> {
 
     @Override
     protected Boolean doInBackground(Object... objects) {
-        JSONObject object = new JSONObject();
-        String result = null;
-        try {
-            object.put("email", objects[0]);
-            object.put("password", objects[1]);
+        Communication communication = new Communication();
+
+        String respuesta = communication.loginUsuario(objects[0].toString(),objects[1].toString());
 
 
-            URL url = new URL("http://so-unlam.net.ar/api/api/login");
-            HttpURLConnection connection;
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-            connection.setDoOutput(true);
-            connection.setDoInput(true);
-            connection.setConnectTimeout(5000);
-            connection.setRequestMethod("POST");
-
-            DataOutputStream dataOutputStream = new DataOutputStream(connection.getOutputStream());
-            dataOutputStream.write(object.toString().getBytes("UTF-8"));
-
-            Log.i("debug104", "Se envia al servidor " + object.toString());
-
-            dataOutputStream.flush();
-            connection.connect();
-
-            int responseCode = connection.getResponseCode();
-            Log.i("debug166", String.valueOf(responseCode));
-            if (responseCode == HttpURLConnection.HTTP_OK || responseCode == HttpURLConnection.HTTP_CREATED) {
-
-                InputStreamReader inputStreamReader = new InputStreamReader(connection.getInputStream());
-                result = convertInputStreamToString(inputStreamReader).toString();
-
-
-            } else if (responseCode == HttpURLConnection.HTTP_BAD_REQUEST) {
-
-                InputStreamReader inputStreamReader = new InputStreamReader(connection.getErrorStream());
-                result = convertInputStreamToString(inputStreamReader).toString();
-
-            } else {
-                result = "NOT_OK";
-            }
-
-            dataOutputStream.close();
-            connection.disconnect();
-
-            JSONObject answer = new JSONObject(result);
-
-            result = answer.get("success").toString();
-
-            Log.i("debug166", "entre");
-        } catch (JSONException | IOException e) {
-            Log.i("debug104", String.valueOf(e));
-            e.printStackTrace();
-            result = "false";
-        }
-
-        if (result.matches("true")) {
-            return true;
-        } else {
+        if(respuesta.compareTo(communication.MSG_ERROR) == 0) {
+            this.mensaje = "Error en la conexión, intente de nuevo más tarde";
             return false;
         }
 
+        JSONObject answer = null;
+        try {
+            answer = new JSONObject(respuesta);
+
+            if (answer.get("success").toString().compareTo("true") == 0) {
+                this.usuario = new Usuario(objects[0].toString(),answer.get("token").toString(),answer.get("token_refesh").toString());
+
+                return true;
+            } else {
+                this.mensaje = answer.get("msg").toString();
+
+                return false;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            this.mensaje = "Error inesperado, intente nuevamente";
+            return false;
+        }
     }
     public static StringBuilder convertInputStreamToString(InputStreamReader inputStreamReader) throws IOException {
         BufferedReader br = new BufferedReader(inputStreamReader);
@@ -110,11 +81,11 @@ public class AsincroTaskLogin extends AsyncTask<Object, Void, Boolean> {
     protected void onPostExecute(Boolean aBoolean) {
         this.loginActivity.toggleProgressBar(false);
         if(aBoolean) {
-            this.loginActivity.lanzarActivity(PantallaInicioActivity.class);
+            this.loginActivity.lanzarActivity(PantallaInicioActivity.class, this.usuario);
             this.loginActivity.showMessage("Datos correctos");
         } else {
-            this.loginActivity.showMessage("Datos incorrectos");
             this.loginActivity.habilitarBotones(true);
+            this.loginActivity.showMessage(this.mensaje);
         }
         super.onPostExecute(aBoolean);
     }
