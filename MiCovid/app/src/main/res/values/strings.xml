@@ -17,4 +17,5 @@
     <string name="text_puntuacion">Puntuación:</string>
     <string name="text_felicitaciones">¡Felicitaciones!</string>
     <string name="text_dosis_aplicadas">Dosis aplicadas</string>
+    <string name="LoginTitle">Inicia sesión</string>
 </resources>
