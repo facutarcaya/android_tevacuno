@@ -14,8 +14,15 @@ public class Usuario {
         this.tokenRefresh = tokenRefresh;
     }
 
-    public void refrescarToken(String token, String tokenRefresh) {
-        this.token = token;
-        this.tokenRefresh = tokenRefresh;
+    public String getEmail() {
+        return email;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public String getTokenRefresh() {
+        return tokenRefresh;
     }
 }

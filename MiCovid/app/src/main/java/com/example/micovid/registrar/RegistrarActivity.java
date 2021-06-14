@@ -22,7 +22,9 @@ import java.util.regex.Pattern;
 
 public class RegistrarActivity extends AppCompatActivity {
 
-    public static final String EXTRA_EMAIL = "com.example.micovid.EMAIL_REGISTRAR";
+    public static final String EXTRA_EMAIL = "com.example.micovid.EMAIL_REGISTER";
+    public static final String EXTRA_TOKEN = "com.example.micovid.TOKEN_REGISTER";
+    public static final String EXTRA_REFRESH = "com.example.micovid.REFRESH_REGISTER";
     private static final int CREDENTIALS_RESULT = 4342;
 
     private ProgressBar progressBar;
@@ -99,7 +101,9 @@ public class RegistrarActivity extends AppCompatActivity {
 
     public void lanzarActivity(Class<?> tipoActividad, Usuario usuario) {
         Intent intent = new Intent(this,tipoActividad);
-        intent.putExtra(EXTRA_EMAIL, this.email);
+        intent.putExtra(EXTRA_EMAIL, usuario.getEmail());
+        intent.putExtra(EXTRA_TOKEN, usuario.getToken());
+        intent.putExtra(EXTRA_REFRESH, usuario.getTokenRefresh());
         startActivity(intent);
     }
 

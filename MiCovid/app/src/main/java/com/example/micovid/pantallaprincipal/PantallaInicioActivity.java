@@ -2,26 +2,197 @@ package com.example.micovid.pantallaprincipal;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.BatteryManager;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.micovid.R;
+import com.example.micovid.actividadprincipal.MainActivity;
+import com.example.micovid.asincronico.AsincroTaskRefresh;
+import com.example.micovid.asincronico.AsincroTaskVerificarTimeout;
 import com.example.micovid.juego.GameActivity;
+import com.example.micovid.juego.GameOverActivity;
 import com.example.micovid.login.LoginActivity;
+import com.example.micovid.registrar.RegistrarActivity;
 
 public class PantallaInicioActivity extends AppCompatActivity {
+    private TextView textViewBatteryLevel;
+    private ImageView imageViewBatteryLevel;
+    private ProgressBar progressBarTokenRefresh;
+    private Button buttonJugar;
+    private boolean esperando;
+    private long tiempoActual;
+
+    private String email;
+    private String token;
+    private String tokenRefresh;
+
+    private AsincroTaskVerificarTimeout asincroTaskVerificarTimeout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pantalla_inicio);
+
+        this.textViewBatteryLevel = findViewById(R.id.textViewBatteryLevel);
+        this.imageViewBatteryLevel = findViewById(R.id.imageViewBatteryLevel);
+        this.progressBarTokenRefresh = findViewById(R.id.progressBarTokenRefresh);
+        this.buttonJugar = findViewById(R.id.buttonJugar);
+
+        updateBattery();
+        reanudarPantalla();
+
+
         Intent intent = getIntent();
+
         String message = intent.getStringExtra(LoginActivity.EXTRA_EMAIL);
+        if (message.isEmpty()) {
+            message = intent.getStringExtra(RegistrarActivity.EXTRA_EMAIL);
+
+            if(message.isEmpty()) {
+                this.email = intent.getStringExtra(GameOverActivity.EXTRA_EMAIL);
+                this.token = intent.getStringExtra(GameOverActivity.EXTRA_TOKEN);
+                this.tokenRefresh = intent.getStringExtra(GameOverActivity.EXTRA_REFRESH);
+                this.tiempoActual = Long.parseLong(intent.getStringExtra(GameOverActivity.EXTRA_TIEMPO));
+            } else {
+                this.email = message;
+                this.token = intent.getStringExtra(RegistrarActivity.EXTRA_TOKEN);
+                this.tokenRefresh = intent.getStringExtra(RegistrarActivity.EXTRA_REFRESH);
+                this.tiempoActual = System.currentTimeMillis();
+            }
+
+        } else {
+            this.email = message;
+            this.token = intent.getStringExtra(LoginActivity.EXTRA_TOKEN);
+            this.tokenRefresh = intent.getStringExtra(LoginActivity.EXTRA_REFRESH);
+            this.tiempoActual = System.currentTimeMillis();
+        }
+
+
+
+    }
+
+    public void preguntarRefresh() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Venció la sesión");
+        alertDialogBuilder.setIcon(R.drawable.refresh);
+        alertDialogBuilder.setMessage("¿Desea renovar la sesión?");
+        alertDialogBuilder.setCancelable(false);
+        alertDialogBuilder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) {
+                lanzarRefrescarToken();
+            }
+        });
+        alertDialogBuilder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                showMessage("Cerró la sesión correctamente");
+                volverAlInicio();
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     public void iniciarJuego(View view) {
+        cancelarTask();
+        finish();
         Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);
+    }
+
+    public void volverAlInicio() {
+        cancelarTask();
+        finish();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    public void lanzarRefrescarToken() {
+        new AsincroTaskRefresh(PantallaInicioActivity.this).execute(this.tokenRefresh);
+    }
+
+    public void pausarPantalla() {
+        this.progressBarTokenRefresh.setVisibility(View.VISIBLE);
+        this.buttonJugar.setEnabled(false);
+        this.esperando = true;
+    }
+
+    public void reanudarPantalla() {
+        this.progressBarTokenRefresh.setVisibility(View.INVISIBLE);
+        this.buttonJugar.setEnabled(true);
+        this.esperando = false;
+    }
+
+    public void lanzarTask() {
+        asincroTaskVerificarTimeout = new AsincroTaskVerificarTimeout(PantallaInicioActivity.this);
+        asincroTaskVerificarTimeout.execute(this.tiempoActual);
+    }
+
+    public void cancelarTask() {
+        asincroTaskVerificarTimeout.cancel(true);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateBattery();
+        lanzarTask();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        cancelarTask();
+    }
+
+    private void updateBattery() {
+        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        Intent batteryStatus = this.registerReceiver(null, ifilter);
+
+        int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+        boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
+                status == BatteryManager.BATTERY_STATUS_FULL;
+
+        int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+
+        textViewBatteryLevel.setText(String.valueOf(level) + " %");
+
+        if (isCharging) {
+            imageViewBatteryLevel.setImageResource(R.drawable.battery_charging);
+        } else {
+            if (level > 75) {
+                imageViewBatteryLevel.setImageResource(R.drawable.battery_100);
+            } else if (level > 50) {
+                imageViewBatteryLevel.setImageResource(R.drawable.battery_75);
+            } else if(level > 25) {
+                imageViewBatteryLevel.setImageResource(R.drawable.battery_50);
+            } else {
+                imageViewBatteryLevel.setImageResource(R.drawable.battery_25);
+            }
+        }
+    }
+
+    public void refrescarTokens(String token, String tokenRefresh) {
+        this.token = token;
+        this.tokenRefresh = tokenRefresh;
+        this.tiempoActual = System.currentTimeMillis();
+        this.lanzarTask();
+    }
+
+    public void showMessage(String msg) {
+        Toast.makeText(this,msg,Toast.LENGTH_LONG).show();
     }
 }

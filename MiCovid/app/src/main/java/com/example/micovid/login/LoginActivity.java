@@ -24,6 +24,8 @@ import java.util.regex.Pattern;
 public class LoginActivity extends AppCompatActivity {
 
     public static final String EXTRA_EMAIL = "com.example.micovid.EMAIL_LOGIN";
+    public static final String EXTRA_TOKEN = "com.example.micovid.TOKEN_LOGIN";
+    public static final String EXTRA_REFRESH = "com.example.micovid.REFRESH_LOGIN";
     private static final int CREDENTIALS_RESULT = 4342;
 
     private ProgressBar progressBarLogin;
@@ -83,8 +85,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void lanzarActivity(Class<?> tipoActividad, Usuario usuario) {
+        finish();
         Intent intent = new Intent(this,tipoActividad);
-        intent.putExtra(EXTRA_EMAIL, this.email);
+        intent.putExtra(EXTRA_EMAIL, usuario.getEmail());
+        intent.putExtra(EXTRA_TOKEN, usuario.getToken());
+        intent.putExtra(EXTRA_REFRESH, usuario.getTokenRefresh());
         startActivity(intent);
     }
 

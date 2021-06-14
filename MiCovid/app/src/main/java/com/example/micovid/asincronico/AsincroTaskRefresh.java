@@ -6,7 +6,6 @@ import com.example.micovid.actividadprincipal.Usuario;
 import com.example.micovid.comm.Communication;
 import com.example.micovid.pantallaprincipal.PantallaInicioActivity;
 import com.example.micovid.registrar.RegistrarActivity;
-import com.example.micovid.renovartoken.RefreshTokenActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,20 +15,19 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class AsincroTaskRefresh extends AsyncTask<Object, Void, Boolean> {
-    private RefreshTokenActivity refreshTokenActivity;
+    private PantallaInicioActivity pantallaInicioActivity;
     private String mensaje;
     private String token;
     private String tokenRefresh;
 
 
-    public AsincroTaskRefresh(RefreshTokenActivity refreshTokenActivity) {
-        this.refreshTokenActivity = refreshTokenActivity;
+    public AsincroTaskRefresh(PantallaInicioActivity pantallaInicioActivity) {
+        this.pantallaInicioActivity = pantallaInicioActivity;
     }
 
     @Override
     protected void onPreExecute() {
-        //this.refreshTokenActivity.toggleProgressBar(true);
-        //this.refreshTokenActivity.habilitarBotones(false);
+        this.pantallaInicioActivity.pausarPantalla();
     }
 
     @Override
@@ -75,13 +73,13 @@ public class AsincroTaskRefresh extends AsyncTask<Object, Void, Boolean> {
     }
     @Override
     protected void onPostExecute(Boolean aBoolean) {
-        //this.refreshTokenActivity.toggleProgressBar(false);
+        this.pantallaInicioActivity.reanudarPantalla();
         if(aBoolean) {
-            //this.registrarActivity.lanzarActivity(PantallaInicioActivity.class, this.usuario);
-            this.refreshTokenActivity.showMessage("Datos correctos");
+            this.pantallaInicioActivity.showMessage("Se refresco el token correctamente");
+            this.pantallaInicioActivity.refrescarTokens(this.token,this.tokenRefresh);
         } else {
-            //this.refreshTokenActivity.habilitarBotones(true);
-            this.refreshTokenActivity.showMessage(this.mensaje);
+            this.pantallaInicioActivity.showMessage("Error al resfrescar el token, vuelva a loguearse");
+            this.pantallaInicioActivity.volverAlInicio();
         }
         super.onPostExecute(aBoolean);
     }

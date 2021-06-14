@@ -144,7 +144,7 @@ public class Communication {
             URL url = new URL(REFRESH_URL);
             HttpURLConnection connection;
             connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestProperty("Authorization","Bearer " + new String(Base64.getEncoder().encode(token_refresh.getBytes())));
+            connection.setRequestProperty("Authorization","Bearer " + token_refresh);
             connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             connection.setDoOutput(true);
             connection.setDoInput(true);
@@ -157,6 +157,9 @@ public class Communication {
             connection.connect();
 
             int responseCode = connection.getResponseCode();
+
+            Log.i("debug105", "Response code" + String.valueOf(responseCode));
+
             if (responseCode == HttpURLConnection.HTTP_OK
                     ||responseCode == HttpURLConnection.HTTP_CREATED) {
 
@@ -180,7 +183,7 @@ public class Communication {
             result = MSG_ERROR;
         }
 
-        Log.i("debug104", "Recibo " + result);
+        Log.i("debug105", "Recibo " + result);
 
         return result;
     }

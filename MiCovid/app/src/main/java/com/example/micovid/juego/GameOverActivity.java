@@ -11,6 +11,10 @@ import com.example.micovid.login.LoginActivity;
 
 public class GameOverActivity extends AppCompatActivity {
 
+    public static final String EXTRA_EMAIL = "com.example.micovid.EMAIL_OVER";
+    public static final String EXTRA_TOKEN = "com.example.micovid.TOKEN_OVER";
+    public static final String EXTRA_REFRESH = "com.example.micovid.REFRESH_OVER";
+    public static final String EXTRA_TIEMPO = "com.example.micovid.TIEMPO_OVER";
     private int puntuacion;
 
     @Override
