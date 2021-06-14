@@ -52,7 +52,7 @@ public class AsincroTaskLogin extends AsyncTask<Object, Void, Boolean> {
             answer = new JSONObject(respuesta);
 
             if (answer.get("success").toString().compareTo("true") == 0) {
-                this.usuario = new Usuario(objects[0].toString(),answer.get("token").toString(),answer.get("token_refesh").toString());
+                this.usuario = new Usuario(objects[0].toString(),answer.get("token").toString(),answer.get("token_refresh").toString());
 
                 return true;
             } else {

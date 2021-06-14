@@ -31,6 +31,8 @@ public class Communication {
             object.put("email", email);
             object.put("password", password);
 
+            Log.i("debug104", "Se envia al servidor " + object.toString());
+
             URL url = new URL(LOGIN_URL);
             HttpURLConnection connection;
             connection = (HttpURLConnection) url.openConnection();
@@ -69,6 +71,8 @@ public class Communication {
             e.printStackTrace();
             result = MSG_ERROR;
         }
+
+        Log.i("debug104", "Recibo " + result);
 
         return result;
     }

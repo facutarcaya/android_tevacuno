@@ -47,9 +47,12 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     private boolean juegoDetenido;
     private int countdown;
     private long segundos;
+    private long segundosPausa;
 
     private SensorManager mSensorManager;
     private Sensor mGyro;
+    private Sensor mLight;
+    private TextView textViewLight;
 
     private float valorXprevio;
     private float valorXactual;
@@ -70,6 +73,8 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         this.imageViewNumber1 = findViewById(R.id.imageViewNumber1);
         this.imageViewNumber2 = findViewById(R.id.imageViewNumber2);
 
+        this.textViewLight = findViewById(R.id.textViewLight);
+
         this.imageViewNumber1.setVisibility(View.INVISIBLE);
         this.imageViewNumber2.setVisibility(View.INVISIBLE);
 
@@ -79,6 +84,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
         this.mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         this.mGyro = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        this.mLight = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
 
         if (this.mGyro != null) {
             mSensorManager.registerListener(this, mGyro, SensorManager.SENSOR_DELAY_NORMAL);
@@ -86,10 +92,18 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
             Log.d("ERROR","GYRO NO SOPORTADO");
         }
 
+        if (this.mGyro != null) {
+            mSensorManager.registerListener(this, mLight, SensorManager.SENSOR_DELAY_NORMAL);
+        } else {
+            Log.d("ERROR","LIGHT NO SOPORTADO");
+        }
+
         puntuacion = 0;
         validando = false;
         valorXprevio = 0;
         valorYprevio = 0;
+        segundos = 0;
+        segundosPausa = 0;
 
 
         reiniciarPos();
@@ -99,7 +113,15 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onResume() {
         super.onResume();
+        this.segundos = System.currentTimeMillis() - segundosPausa;
         mSensorManager.registerListener(this, mGyro, SensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager.registerListener(this, mLight, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        this.segundosPausa = System.currentTimeMillis() - this.segundos;
     }
 
     public void rotarMas(View view) {
@@ -234,6 +256,8 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
                     valorYprevio = valorXactual;
 
                 }
+            } else if (sensor.getType() == Sensor.TYPE_LIGHT) {
+                textViewLight.setText(String.valueOf(sensorEvent.values[0]));
             }
         } else if (!juegoDetenido && !juegoIniciado){
             if(countdown == 3) {
