@@ -13,9 +13,12 @@
         <activity
             android:name=".juego.GameActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".pantallaprincipal.PantallaInicioActivity" />
-        <activity android:name=".login.LoginActivity" />
-        <activity android:name=".registrar.RegistrarActivity" />
+        <activity android:name=".pantallaprincipal.PantallaInicioActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".login.LoginActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".registrar.RegistrarActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".actividadprincipal.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
