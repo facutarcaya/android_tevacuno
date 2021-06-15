@@ -1,7 +1,11 @@
 package com.example.micovid.juego;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.hardware.Sensor;
@@ -9,33 +13,42 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.micovid.R;
 import com.example.micovid.asincronico.AsincroTaskVerificarPos;
-import com.example.micovid.registrar.RegistrarActivity;
-
-import org.w3c.dom.Text;
+import com.example.micovid.pantallaprincipal.PantallaInicioActivity;
 
 public class GameActivity extends AppCompatActivity implements SensorEventListener {
+
+    public static final String EXTRA_PUNTUACION = "com.example.micovid.GAME_PUNTUACION";
+    public static final String EXTRA_TIEMPO = "com.example.micovid.TIEMPO_GAME";
+    public static final String EXTRA_EMAIL = "com.example.micovid.EMAIL_GAME";
+    public static final String EXTRA_TOKEN = "com.example.micovid.TOKEN_GAME";
+    public static final String EXTRA_REFRESH = "com.example.micovid.REFRESH_GAME";
 
     private static final int POS_MINIMA = -5;
     private static final int POS_MAXIMA = 5;
     private static final int SEGUNDOS_MAXIMOS = 60;
-    public static final String EXTRA_PUNTUACION = "com.example.micovid.GAME_PUNTUACION";
+    private static final float UMBRAL_LUZ_MINIMA = (float) 20.0;
 
     private RotateAnimation rotateAnimation;
-    private TextView textViewPuntuacion2;
+    private TextView textViewXGyro;
+    private TextView textViewYGyro;
+    private TextView textViewZGyro;
+    private TextView textViewPuntuacionValor;
+    private TextView textViewPocaLuz;
     private ImageView imageViewVacunaVerde;
     private ImageView imageViewVacunaRoja;
-    private ImageView imageViewGrayBack;
+    private ConstraintLayout fondoPausa;
     private ImageView imageViewCountDown;
     private ImageView imageViewNumber1;
     private ImageView imageViewNumber2;
@@ -45,6 +58,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     public boolean validando;
     private boolean juegoIniciado;
     private boolean juegoDetenido;
+    private boolean juegoPausado;
     private int countdown;
     private long segundos;
     private long segundosPausa;
@@ -53,12 +67,19 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     private Sensor mGyro;
     private Sensor mLight;
     private TextView textViewLight;
+    private float valorLuz;
 
     private float valorXprevio;
     private float valorXactual;
     private float valorYprevio;
     private float valorYactual;
 
+    private String email;
+    private String token;
+    private String tokenRefresh;
+    private long tiempoActual;
+
+    private Vibrator v;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +88,15 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
         this.imageViewVacunaVerde = findViewById(R.id.imageViewVacunaVerde);
         this.imageViewVacunaRoja = findViewById(R.id.imageViewVacunaRoja);
-        this.textViewPuntuacion2 = findViewById(R.id.textViewPuntuacion2);
-        this.imageViewGrayBack = findViewById(R.id.imageViewGrayBack);
+        this.textViewXGyro = findViewById(R.id.textViewXGyro);
+        this.textViewYGyro = findViewById(R.id.textViewYGyro);
+        this.textViewZGyro = findViewById(R.id.textViewZGyro);
+        this.textViewXGyro.setText("X: 0°");
+        this.textViewYGyro.setText("Y: 0°");
+        this.textViewZGyro.setText("Z: 0°");
+        this.textViewPocaLuz = findViewById(R.id.textViewPocaLuz);
+        this.textViewPuntuacionValor = findViewById(R.id.textViewPuntuacionValor);
+        this.fondoPausa = findViewById(R.id.fondoPausa);
         this.imageViewCountDown = findViewById(R.id.imageViewCountDown);
         this.imageViewNumber1 = findViewById(R.id.imageViewNumber1);
         this.imageViewNumber2 = findViewById(R.id.imageViewNumber2);
@@ -77,6 +105,17 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
         this.imageViewNumber1.setVisibility(View.INVISIBLE);
         this.imageViewNumber2.setVisibility(View.INVISIBLE);
+
+        Intent intent = getIntent();
+
+        this.valorLuz = (float) 0.0;
+
+        this.email = intent.getStringExtra(PantallaInicioActivity.EXTRA_EMAIL);
+        this.token = intent.getStringExtra(PantallaInicioActivity.EXTRA_TOKEN);
+        this.tokenRefresh = intent.getStringExtra(PantallaInicioActivity.EXTRA_REFRESH);
+        this.tiempoActual = Long.parseLong(intent.getStringExtra(PantallaInicioActivity.EXTRA_TIEMPO));
+
+        v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         countdown = 3;
         juegoIniciado = false;
@@ -104,7 +143,9 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         valorYprevio = 0;
         segundos = 0;
         segundosPausa = 0;
+        juegoPausado = false;
 
+        this.textViewPocaLuz.setVisibility(View.INVISIBLE);
 
         reiniciarPos();
         actualizarPuntuacion();
@@ -122,6 +163,28 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     protected void onPause() {
         super.onPause();
         this.segundosPausa = System.currentTimeMillis() - this.segundos;
+    }
+
+    public void validarLuz(float valorLuz) {
+        if(valorLuz >= UMBRAL_LUZ_MINIMA && juegoPausado) {
+            reanudarJuego();
+        } else if (valorLuz < UMBRAL_LUZ_MINIMA && !juegoPausado) {
+            pausarJuego();
+        }
+    }
+
+    private void pausarJuego() {
+        this.juegoPausado = true;
+        this.fondoPausa.setVisibility(View.VISIBLE);
+        this.textViewPocaLuz.setVisibility(View.VISIBLE);
+        this.segundosPausa = System.currentTimeMillis() - this.segundos;
+    }
+
+    private void reanudarJuego() {
+        this.juegoPausado = false;
+        this.fondoPausa.setVisibility(View.INVISIBLE);
+        this.textViewPocaLuz.setVisibility(View.INVISIBLE);
+        this.segundos = System.currentTimeMillis() - segundosPausa;
     }
 
     public void rotarMas(View view) {
@@ -178,11 +241,12 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     }
 
     public void actualizarPuntuacion() {
-        this.textViewPuntuacion2.setText(String.valueOf(this.puntuacion));
+        this.textViewPuntuacionValor.setText(String.valueOf(this.puntuacion));
     }
 
     public void sumarPunto() {
         this.puntuacion++;
+        v.vibrate(VibrationEffect.createOneShot(200,VibrationEffect.DEFAULT_AMPLITUDE));
         actualizarPuntuacion();
         reiniciarPos();
     }
@@ -215,49 +279,61 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
 
+        Sensor sensor = sensorEvent.sensor;
+
         if (juegoIniciado && !juegoDetenido) {
 
-            if (countdown == SEGUNDOS_MAXIMOS) {
-                Resources res = getResources();
-                this.imageViewNumber1.setImageResource(res.getIdentifier("number" + (countdown/10) + "_png" , "drawable", getPackageName()));
-                this.imageViewNumber2.setImageResource(res.getIdentifier("number" + (countdown%10) + "_png" , "drawable", getPackageName()));
-                segundos = System.currentTimeMillis();
-                countdown--;
-            } else if(System.currentTimeMillis() - segundos >= 1000) {
-                if(countdown < 0) {
-                    detenerJuego();
-                } else {
-                    Resources res = getResources();
-                    this.imageViewNumber1.setImageResource(res.getIdentifier("number" + (countdown/10) + "_png" , "drawable", getPackageName()));
-                    this.imageViewNumber2.setImageResource(res.getIdentifier("number" + (countdown%10) + "_png" , "drawable", getPackageName()));
-                    countdown--;
-                }
-                segundos = System.currentTimeMillis();
+            if (sensor.getType() == Sensor.TYPE_LIGHT) {
+                this.valorLuz = (float) sensorEvent.values[0];
+                textViewLight.setText(String.valueOf(this.valorLuz) + " lx");
+                validarLuz(this.valorLuz);
             }
 
-            Sensor sensor = sensorEvent.sensor;
+            if(!juegoPausado) {
 
-            if(sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
 
-                valorXactual = sensorEvent.values[0];
-                valorYactual = sensorEvent.values[1];
-
-                if (valorXprevio == 0 && valorYprevio == 0) {
-                    valorXprevio = valorXactual;
-                    valorYprevio = valorXactual;
-                } else {
-                    if( valorXactual < valorXprevio ) {
-                        rotateImage((float) (Math.abs( valorXactual - valorXprevio ) * 10.0 * 1.5));
+                if (countdown == SEGUNDOS_MAXIMOS) {
+                    Resources res = getResources();
+                    this.imageViewNumber1.setImageResource(res.getIdentifier("number" + (countdown / 10) + "_png", "drawable", getPackageName()));
+                    this.imageViewNumber2.setImageResource(res.getIdentifier("number" + (countdown % 10) + "_png", "drawable", getPackageName()));
+                    segundos = System.currentTimeMillis();
+                    countdown--;
+                } else if (System.currentTimeMillis() - segundos >= 1000) {
+                    if (countdown < 0) {
+                        detenerJuego();
                     } else {
-                        rotateImage((float) (Math.abs( valorXactual - valorXprevio ) * -10.0 * 1.5));
+                        Resources res = getResources();
+                        this.imageViewNumber1.setImageResource(res.getIdentifier("number" + (countdown / 10) + "_png", "drawable", getPackageName()));
+                        this.imageViewNumber2.setImageResource(res.getIdentifier("number" + (countdown % 10) + "_png", "drawable", getPackageName()));
+                        countdown--;
                     }
-
-                    valorXprevio = valorXactual;
-                    valorYprevio = valorXactual;
-
+                    segundos = System.currentTimeMillis();
                 }
-            } else if (sensor.getType() == Sensor.TYPE_LIGHT) {
-                textViewLight.setText(String.valueOf(sensorEvent.values[0]));
+
+                if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+
+                    this.textViewXGyro.setText("X: " + sensorEvent.values[0] + "°");
+                    this.textViewYGyro.setText("Y: " + sensorEvent.values[1] + "°");
+                    this.textViewZGyro.setText("Z: " + sensorEvent.values[2] + "°");
+
+                    valorXactual = sensorEvent.values[0];
+                    valorYactual = sensorEvent.values[1];
+
+                    if (valorXprevio == 0 && valorYprevio == 0) {
+                        valorXprevio = valorXactual;
+                        valorYprevio = valorXactual;
+                    } else {
+                        if (valorXactual < valorXprevio) {
+                            rotateImage((float) (Math.abs(valorXactual - valorXprevio) * 10.0 * 1.5));
+                        } else {
+                            rotateImage((float) (Math.abs(valorXactual - valorXprevio) * -10.0 * 1.5));
+                        }
+
+                        valorXprevio = valorXactual;
+                        valorYprevio = valorXactual;
+
+                    }
+                }
             }
         } else if (!juegoDetenido && !juegoIniciado){
             if(countdown == 3) {
@@ -279,7 +355,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     public void iniciarJuego() {
         this.imageViewCountDown.setVisibility(View.GONE);
-        this.imageViewGrayBack.setVisibility(View.GONE);
+        this.fondoPausa.setVisibility(View.INVISIBLE);
         this.imageViewNumber1.setVisibility(View.VISIBLE);
         this.imageViewNumber2.setVisibility(View.VISIBLE);
         juegoIniciado = true;
@@ -291,8 +367,48 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         juegoIniciado = false;
         juegoDetenido = true;
 
+        finish();
+
         Intent intent = new Intent(this, GameOverActivity.class);
         intent.putExtra(EXTRA_PUNTUACION, String.valueOf(this.puntuacion));
+        intent.putExtra(EXTRA_TIEMPO,String.valueOf(this.tiempoActual));
+        intent.putExtra(EXTRA_EMAIL, this.email);
+        intent.putExtra(EXTRA_TOKEN, this.token);
+        intent.putExtra(EXTRA_REFRESH, this.tokenRefresh);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Salir");
+        alertDialogBuilder.setMessage("¿Desea terminar el juego y salir?");
+        alertDialogBuilder.setCancelable(false);
+        alertDialogBuilder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) {
+                volverAlInicio();
+            }
+        });
+        alertDialogBuilder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    public void volverAlInicio() {
+        finish();
+        Intent intent = new Intent(this, PantallaInicioActivity.class);
+        intent.putExtra(EXTRA_TIEMPO,String.valueOf(this.tiempoActual));
+        intent.putExtra(EXTRA_EMAIL, this.email);
+        intent.putExtra(EXTRA_TOKEN, this.token);
+        intent.putExtra(EXTRA_REFRESH, this.tokenRefresh);
         startActivity(intent);
     }
 

@@ -18,4 +18,5 @@
     <string name="text_felicitaciones">¡Felicitaciones!</string>
     <string name="text_dosis_aplicadas">Dosis aplicadas</string>
     <string name="LoginTitle">Inicia sesión</string>
+    <string name="text_pausa">¡Poca luz!</string>
 </resources>

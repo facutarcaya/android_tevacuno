@@ -140,9 +140,6 @@ public class LoginActivity extends AppCompatActivity {
         Intent credentialsIntent = keyguardManager.createConfirmDeviceCredentialIntent("Confirmá para continuar", "");
         if (credentialsIntent != null) {
             startActivityForResult(credentialsIntent, CREDENTIALS_RESULT);
-        } else {
-            //no password needed
-            Toast.makeText(this,"Credenciales correctas",Toast.LENGTH_LONG).show();
         }
     }
 

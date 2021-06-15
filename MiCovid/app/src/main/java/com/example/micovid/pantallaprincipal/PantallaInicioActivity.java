@@ -25,6 +25,11 @@ import com.example.micovid.login.LoginActivity;
 import com.example.micovid.registrar.RegistrarActivity;
 
 public class PantallaInicioActivity extends AppCompatActivity {
+    public static final String EXTRA_TIEMPO = "com.example.micovid.TIEMPO_INICIO";
+    public static final String EXTRA_EMAIL = "com.example.micovid.EMAIL_INICIO";
+    public static final String EXTRA_TOKEN = "com.example.micovid.TOKEN_INICIO";
+    public static final String EXTRA_REFRESH = "com.example.micovid.REFRESH_INICIO";
+
     private TextView textViewBatteryLevel;
     private ImageView imageViewBatteryLevel;
     private ProgressBar progressBarTokenRefresh;
@@ -55,14 +60,23 @@ public class PantallaInicioActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         String message = intent.getStringExtra(LoginActivity.EXTRA_EMAIL);
-        if (message.isEmpty()) {
+        if (message == null) {
             message = intent.getStringExtra(RegistrarActivity.EXTRA_EMAIL);
 
-            if(message.isEmpty()) {
-                this.email = intent.getStringExtra(GameOverActivity.EXTRA_EMAIL);
-                this.token = intent.getStringExtra(GameOverActivity.EXTRA_TOKEN);
-                this.tokenRefresh = intent.getStringExtra(GameOverActivity.EXTRA_REFRESH);
-                this.tiempoActual = Long.parseLong(intent.getStringExtra(GameOverActivity.EXTRA_TIEMPO));
+            if(message == null) {
+                message = intent.getStringExtra(GameOverActivity.EXTRA_EMAIL);
+
+                if(message == null) {
+                    this.email = intent.getStringExtra(GameActivity.EXTRA_EMAIL);
+                    this.token = intent.getStringExtra(GameActivity.EXTRA_TOKEN);
+                    this.tokenRefresh = intent.getStringExtra(GameActivity.EXTRA_REFRESH);
+                    this.tiempoActual = Long.parseLong(intent.getStringExtra(GameActivity.EXTRA_TIEMPO));
+                } else {
+                    this.email = intent.getStringExtra(message);
+                    this.token = intent.getStringExtra(GameOverActivity.EXTRA_TOKEN);
+                    this.tokenRefresh = intent.getStringExtra(GameOverActivity.EXTRA_REFRESH);
+                    this.tiempoActual = Long.parseLong(intent.getStringExtra(GameOverActivity.EXTRA_TIEMPO));
+                }
             } else {
                 this.email = message;
                 this.token = intent.getStringExtra(RegistrarActivity.EXTRA_TOKEN);
@@ -110,6 +124,10 @@ public class PantallaInicioActivity extends AppCompatActivity {
         cancelarTask();
         finish();
         Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra(EXTRA_TIEMPO,String.valueOf(this.tiempoActual));
+        intent.putExtra(EXTRA_EMAIL, this.email);
+        intent.putExtra(EXTRA_TOKEN, this.token);
+        intent.putExtra(EXTRA_REFRESH, this.tokenRefresh);
         startActivity(intent);
     }
 
@@ -195,4 +213,30 @@ public class PantallaInicioActivity extends AppCompatActivity {
     public void showMessage(String msg) {
         Toast.makeText(this,msg,Toast.LENGTH_LONG).show();
     }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Salir");
+        alertDialogBuilder.setMessage("¿Desea salir al inicio?");
+        alertDialogBuilder.setCancelable(false);
+        alertDialogBuilder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) {
+                volverAlInicio();
+            }
+        });
+        alertDialogBuilder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+
 }

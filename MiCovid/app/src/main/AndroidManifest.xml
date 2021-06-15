@@ -3,6 +3,7 @@
     package="com.example.micovid">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:allowBackup="true"
@@ -12,8 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MiCovid"
         android:usesCleartextTraffic="true">
-        <activity android:name=".renovartoken.RefreshTokenActivity"></activity>
-        <activity android:name=".juego.GameOverActivity" />
+        <activity
+            android:name=".juego.GameOverActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".juego.GameActivity"
             android:screenOrientation="portrait" />
@@ -30,6 +32,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>
