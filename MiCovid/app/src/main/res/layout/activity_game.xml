@@ -7,6 +7,18 @@
     tools:context=".juego.GameActivity">
 
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/fondoAnimado"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/doctor_fondo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/fondoPausa">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <ImageView
         android:id="@+id/imageViewVacunaRoja"
         android:layout_width="146dp"
