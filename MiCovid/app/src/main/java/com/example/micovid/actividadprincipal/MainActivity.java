@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(DialogInterface arg0, int arg1) {
+                moveTaskToBack(true);
                 finish();
             }
         });

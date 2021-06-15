@@ -17,6 +17,7 @@ public class Communication {
     private static final String LOGIN_URL = "http://so-unlam.net.ar/api/api/login";
     private static final String REGISTER_URL = "http://so-unlam.net.ar/api/api/register";
     private static final String REFRESH_URL = "http://so-unlam.net.ar/api/api/refresh";
+    private static final String EVENT_URL = "http://so-unlam.net.ar/api/api/event";
     private static  final String SEND_AMBIENTE = "PROD";
     private static  final String SEND_COMMISSION = "3900";
     private static  final String SEND_GROUP = "5";
@@ -139,6 +140,8 @@ public class Communication {
 
     public String refrescarToken(String token_refresh) {
         String result = null;
+        JSONObject object = new JSONObject();
+
         try {
 
             URL url = new URL(REFRESH_URL);
@@ -184,6 +187,65 @@ public class Communication {
         }
 
         Log.i("debug105", "Recibo " + result);
+
+        return result;
+    }
+
+    public String registrarEvento(String nombre, int puntuacion, String token_refresh) {
+        String result = null;
+        JSONObject object = new JSONObject();
+        try {
+
+            object.put("env",SEND_AMBIENTE);
+            object.put("type_events","Puntuacion");
+            object.put("description",nombre + ": " + String.valueOf(puntuacion));
+
+            Log.i("debug106", "Se envia al servidor " + object.toString());
+
+            URL url = new URL(EVENT_URL);
+            HttpURLConnection connection;
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestProperty("Authorization","Bearer " + token_refresh);
+            connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+            connection.setDoOutput(true);
+            connection.setDoInput(true);
+            connection.setConnectTimeout(5000);
+            connection.setRequestMethod("POST");
+
+            DataOutputStream dataOutputStream = new DataOutputStream(connection.getOutputStream());
+            dataOutputStream.write(object.toString().getBytes("UTF-8"));
+
+            dataOutputStream.flush();
+            connection.connect();
+
+            int responseCode = connection.getResponseCode();
+
+            Log.i("debug106", "Response code" + String.valueOf(responseCode));
+
+            if (responseCode == HttpURLConnection.HTTP_OK
+                    ||responseCode == HttpURLConnection.HTTP_CREATED) {
+
+                InputStreamReader inputStreamReader = new InputStreamReader(connection.getInputStream());
+                result = convertInputStreamToString(inputStreamReader).toString();
+
+
+            } else if (responseCode == HttpURLConnection.HTTP_BAD_REQUEST) {
+                InputStreamReader inputStreamReader = new InputStreamReader(connection.getErrorStream());
+                result = convertInputStreamToString(inputStreamReader).toString();
+            } else {
+                result = MSG_ERROR;
+                return result;
+            }
+
+            dataOutputStream.close();
+            connection.disconnect();
+
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+            result = MSG_ERROR;
+        }
+
+        Log.i("debug106", "Recibo " + result);
 
         return result;
     }

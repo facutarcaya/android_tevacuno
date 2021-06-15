@@ -19,4 +19,8 @@
     <string name="text_dosis_aplicadas">Dosis aplicadas</string>
     <string name="LoginTitle">Inicia sesión</string>
     <string name="text_pausa">¡Poca luz!</string>
+    <string name="text_guardar_puntuacion">Guardar puntuación</string>
+    <string name="edit_nombre_puntuacion">Ingrese un nombre</string>
+    <string name="button_volver_menu">Volver al inicio</string>
+    <string name="button_ver_puntuaciones">Ver puntuaciones</string>
 </resources>

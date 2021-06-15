@@ -37,8 +37,8 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     private static final int POS_MINIMA = -5;
     private static final int POS_MAXIMA = 5;
-    private static final int SEGUNDOS_MAXIMOS = 60;
-    private static final float UMBRAL_LUZ_MINIMA = (float) 20.0;
+    private static final int SEGUNDOS_MAXIMOS = 10;
+    private static final float UMBRAL_LUZ_MINIMA = (float) 0;//20.0;
 
     private RotateAnimation rotateAnimation;
     private TextView textViewXGyro;
@@ -281,13 +281,24 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
         Sensor sensor = sensorEvent.sensor;
 
+        if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+
+            this.textViewXGyro.setText("X: " + sensorEvent.values[0] + "°");
+            this.textViewYGyro.setText("Y: " + sensorEvent.values[1] + "°");
+            this.textViewZGyro.setText("Z: " + sensorEvent.values[2] + "°");
+
+            valorXactual = sensorEvent.values[0];
+            valorYactual = sensorEvent.values[1];
+        }
+
+        if (sensor.getType() == Sensor.TYPE_LIGHT) {
+            this.valorLuz = (float) sensorEvent.values[0];
+            textViewLight.setText(String.valueOf(this.valorLuz) + " lx");
+        }
+
         if (juegoIniciado && !juegoDetenido) {
 
-            if (sensor.getType() == Sensor.TYPE_LIGHT) {
-                this.valorLuz = (float) sensorEvent.values[0];
-                textViewLight.setText(String.valueOf(this.valorLuz) + " lx");
-                validarLuz(this.valorLuz);
-            }
+            validarLuz(this.valorLuz);
 
             if(!juegoPausado) {
 
@@ -311,13 +322,6 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
                 }
 
                 if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-
-                    this.textViewXGyro.setText("X: " + sensorEvent.values[0] + "°");
-                    this.textViewYGyro.setText("Y: " + sensorEvent.values[1] + "°");
-                    this.textViewZGyro.setText("Z: " + sensorEvent.values[2] + "°");
-
-                    valorXactual = sensorEvent.values[0];
-                    valorYactual = sensorEvent.values[1];
 
                     if (valorXprevio == 0 && valorYprevio == 0) {
                         valorXprevio = valorXactual;
