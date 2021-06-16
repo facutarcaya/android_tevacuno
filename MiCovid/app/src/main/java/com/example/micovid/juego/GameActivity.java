@@ -37,8 +37,8 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     private static final int POS_MINIMA = -5;
     private static final int POS_MAXIMA = 5;
-    private static final int SEGUNDOS_MAXIMOS = 10;
-    private static final float UMBRAL_LUZ_MINIMA = (float) 0;//20.0;
+    private static final int SEGUNDOS_MAXIMOS = 60;
+    private static final float UMBRAL_LUZ_MINIMA = (float) 12.0;
 
     private RotateAnimation rotateAnimation;
     private TextView textViewXGyro;

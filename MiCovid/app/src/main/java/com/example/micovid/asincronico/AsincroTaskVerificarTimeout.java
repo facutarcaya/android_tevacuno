@@ -7,7 +7,7 @@ import com.example.micovid.pantallaprincipal.PantallaInicioActivity;
 
 public class AsincroTaskVerificarTimeout extends AsyncTask<Object, Void, Boolean> {
     private PantallaInicioActivity pantallaInicioActivity;
-    public static final long tiempoMax = 1000 /* 1 Seg*/ * 1 /* 1 Min*/ * 5/*Cant minutos*/ ;
+    public static final long tiempoMax = 1000 /* 1 Seg*/ * 60 /* 1 Min*/ * 5/*Cant minutos*/ ;
 
     public AsincroTaskVerificarTimeout(PantallaInicioActivity pantallaInicioActivity) {
         this.pantallaInicioActivity = pantallaInicioActivity;
