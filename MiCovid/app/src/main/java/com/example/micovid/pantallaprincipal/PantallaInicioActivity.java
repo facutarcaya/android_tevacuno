@@ -21,6 +21,7 @@ import com.example.micovid.asincronico.AsincroTaskRefresh;
 import com.example.micovid.asincronico.AsincroTaskVerificarTimeout;
 import com.example.micovid.juego.GameActivity;
 import com.example.micovid.juego.GameOverActivity;
+import com.example.micovid.juego.PuntuacionesActivity;
 import com.example.micovid.login.LoginActivity;
 import com.example.micovid.registrar.RegistrarActivity;
 
@@ -208,6 +209,11 @@ public class PantallaInicioActivity extends AppCompatActivity {
         this.tokenRefresh = tokenRefresh;
         this.tiempoActual = System.currentTimeMillis();
         this.lanzarTask();
+    }
+
+    public void mostrarPuntuaciones(View view) {
+        Intent intent = new Intent(this, PuntuacionesActivity.class);
+        startActivity(intent);
     }
 
     public void showMessage(String msg) {

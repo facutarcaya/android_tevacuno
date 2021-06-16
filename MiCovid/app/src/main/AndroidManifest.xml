@@ -3,7 +3,7 @@
     package="com.example.micovid">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -14,17 +14,24 @@
         android:theme="@style/Theme.MiCovid"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".juego.PuntuacionesActivity"
+            android:theme="@android:style/Theme.Dialog"
+            android:screenOrientation="portrait"></activity>
+        <activity
             android:name=".juego.GameOverActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".juego.GameActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".pantallaprincipal.PantallaInicioActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".login.LoginActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".registrar.RegistrarActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".pantallaprincipal.PantallaInicioActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".login.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".registrar.RegistrarActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".actividadprincipal.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

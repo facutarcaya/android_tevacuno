@@ -138,7 +138,16 @@ public class GameOverActivity extends AppCompatActivity {
     }
 
     public void lanzarRegistro(View view) {
-        new AsincroTaskEvento(GameOverActivity.this).execute(this.editTextNombrePuntuacion.getText().toString(),this.puntuacion,this.tokenRefresh);
+        if (this.editTextNombrePuntuacion.getText().toString().length() > 3 && this.editTextNombrePuntuacion.getText().toString().length() <=10) {
+            new AsincroTaskEvento(GameOverActivity.this).execute(this.editTextNombrePuntuacion.getText().toString(),this.puntuacion,this.tokenRefresh);
+        } else {
+            this.editTextNombrePuntuacion.setError("El nombre debe ser entre 4 y 10 caracteres");
+        }
+    }
+
+    public void mostrarPuntuaciones(View view) {
+        Intent intent = new Intent(this, PuntuacionesActivity.class);
+        startActivity(intent);
     }
 
     public void guardarPuntuacion() {

@@ -34,4 +34,16 @@ public class Puntuacion {
                 " \"fecha\": \"" + fecha + "\"," +
                 " \"puntuacion\": \"" + puntuacion + "\"}";
     }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getPuntuacion() {
+        return puntuacion;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
 }
