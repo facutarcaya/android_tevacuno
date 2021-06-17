@@ -244,5 +244,9 @@ public class PantallaInicioActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
+    public void abrirComoJugar(View view) {
+        Intent intent = new Intent(this, ComoJugarActivity.class);
+        startActivity(intent);
+    }
 
 }

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#C9E3EF"
     tools:context=".pantallaprincipal.PantallaInicioActivity">
 
     <ProgressBar
@@ -20,7 +21,8 @@
     <Button
         android:id="@+id/buttonJugar"
         style="@style/ButtonClass"
-        android:layout_height="0dp"
+        android:layout_width="314dp"
+        android:layout_height="119dp"
         android:layout_marginStart="50dp"
         android:layout_marginTop="200dp"
         android:layout_marginEnd="50dp"
@@ -33,6 +35,21 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonJugar2"
+        style="@style/ButtonClass"
+        android:layout_width="118dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/purple_500"
+        android:onClick="abrirComoJugar"
+        android:text="@string/button_como_jugar"
+        android:textColor="@color/white"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

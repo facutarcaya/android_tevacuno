@@ -20,6 +20,17 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
+        android:id="@+id/imageViewBrazo"
+        android:layout_width="181dp"
+        android:layout_height="391dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="200dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/brazo_removebg" />
+
+    <ImageView
         android:id="@+id/imageViewVacunaRoja"
         android:layout_width="146dp"
         android:layout_height="131dp"
@@ -43,20 +54,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/vaccine_verde" />
 
-    <TextView
-        android:id="@+id/textViewPuntuacion1"
-        android:layout_width="132dp"
-        android:layout_height="30dp"
-        android:fontFamily="@font/quantico"
-        android:text="PUNTUACION"
-        android:textAlignment="center"
-        android:textColor="#00BCD4"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/imageViewPuntuacion"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <ImageView
         android:id="@+id/imageViewNumber1"
         android:layout_width="60dp"
@@ -79,19 +76,33 @@
 
     <ImageView
         android:id="@+id/imageViewPuntuacion"
-        android:layout_width="138dp"
-        android:layout_height="121dp"
-        android:layout_marginBottom="50dp"
+        android:layout_width="182dp"
+        android:layout_height="157dp"
+        android:layout_marginBottom="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/puntuacion_board" />
 
     <TextView
+        android:id="@+id/textViewPuntuacion1"
+        android:layout_width="174dp"
+        android:layout_height="36dp"
+        android:fontFamily="@font/bungee_inline"
+        android:text="PUNTUACION"
+        android:textAlignment="center"
+        android:textColor="#00BCD4"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/textViewPuntuacionValor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
         android:id="@+id/textViewPuntuacionValor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="70dp"
+        android:layout_marginBottom="50dp"
         android:text="0"
         android:textAlignment="center"
         android:textColor="#00BCD4"

@@ -7,16 +7,20 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="App Covid"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@drawable/logo_ap_removebg"
+        android:label="VacunAR"
+        android:roundIcon="@drawable/logo_ap_removebg"
         android:supportsRtl="true"
         android:theme="@style/Theme.MiCovid"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".juego.PuntuacionesActivity"
-            android:theme="@android:style/Theme.Dialog"
+            android:name=".pantallaprincipal.ComoJugarActivity"
+            android:label="@string/title_activity_como_jugar"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".juego.PuntuacionesActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Dialog" />
         <activity
             android:name=".juego.GameOverActivity"
             android:screenOrientation="portrait" />

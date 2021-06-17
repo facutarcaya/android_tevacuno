@@ -54,6 +54,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     private ImageView imageViewNumber2;
 
     private float anguloActual;
+    private boolean posicionArriba;
     private int puntuacion;
     public boolean validando;
     private boolean juegoIniciado;
@@ -144,6 +145,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         segundos = 0;
         segundosPausa = 0;
         juegoPausado = false;
+        posicionArriba = true;
 
         this.textViewPocaLuz.setVisibility(View.INVISIBLE);
 
@@ -256,11 +258,21 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     }
 
     private boolean getRamdomBool() {
+
+        if(posicionArriba) {
+            this.posicionArriba = false;
+            return true;
+        } else {
+            this.posicionArriba = true;
+            return false;
+        }
+
+        /*
         if (Math.random() >= 0.5) {
             return true;
         } else {
             return false;
-        }
+        }*/
     }
 
     public boolean verificarPos() {

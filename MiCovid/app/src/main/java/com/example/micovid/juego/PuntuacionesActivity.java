@@ -50,8 +50,7 @@ public class PuntuacionesActivity extends Activity {
     public void cargarEnTablaFecha() {
         cargarPuntuacionesEnLista();
 
-
-        for(int i= this.puntuaciones.size(); i >= 0; i--) {
+        for(int i= this.puntuaciones.size() - 1; i >= 0; i--) {
             TableRow tbrow = new TableRow(this);
             TextView t1v = new TextView(this);
             t1v.setText(this.puntuaciones.get(i).getNombre());
