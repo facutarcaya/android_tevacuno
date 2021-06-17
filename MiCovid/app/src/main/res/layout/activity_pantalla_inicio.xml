@@ -60,6 +60,8 @@
         android:layout_marginTop="16dp"
         android:gravity="center_vertical"
         android:text="0%"
+        android:textColor="#191818"
+        android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/imageViewBatteryLevel"
         app:layout_constraintTop_toTopOf="parent" />
 
