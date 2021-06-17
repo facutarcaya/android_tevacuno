@@ -17,7 +17,7 @@
     <string name="text_puntuacion">Puntuación:</string>
     <string name="text_felicitaciones">¡Felicitaciones!</string>
     <string name="text_dosis_aplicadas">Dosis aplicadas</string>
-    <string name="LoginTitle">Inicia sesión</string>
+    <string name="LoginTitle">Iniciar sesión</string>
     <string name="text_pausa">¡Poca luz!</string>
     <string name="text_guardar_puntuacion">Guardar puntuación</string>
     <string name="edit_nombre_puntuacion">Ingrese un nombre</string>

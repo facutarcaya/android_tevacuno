@@ -33,7 +33,6 @@ public class LoginActivity extends AppCompatActivity {
     private EditText editTextLoginPassword;
     private Button buttonLoginCancelar;
     private Button buttonLoginLogin;
-    private TextView buttonRegistrarInicio;
     private String email;
     private String password;
 
@@ -50,7 +49,6 @@ public class LoginActivity extends AppCompatActivity {
         editTextLoginPassword = (EditText) findViewById(R.id.editTextLoginPassword);
         buttonLoginCancelar = (Button) findViewById(R.id.buttonLoginCancelar);
         buttonLoginLogin = (Button) findViewById(R.id.buttonLoginLogin);
-        buttonRegistrarInicio = (TextView) findViewById(R.id.textViewMessage1);
 
         toggleProgressBar(false);
     }
@@ -58,7 +56,6 @@ public class LoginActivity extends AppCompatActivity {
     public void habilitarBotones(boolean status) {
         this.buttonLoginCancelar.setEnabled(status);
         this.buttonLoginLogin.setEnabled(status);
-        this.buttonRegistrarInicio.setEnabled(status);
     }
 
     public void cancelar(View view) {

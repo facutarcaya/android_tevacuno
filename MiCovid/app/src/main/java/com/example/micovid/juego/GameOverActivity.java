@@ -3,8 +3,10 @@ package com.example.micovid.juego;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -71,6 +73,14 @@ public class GameOverActivity extends AppCompatActivity {
 
         TextView textViewPuntuacion = findViewById(R.id.textViewPuntuacion);
         textViewPuntuacion.setText(msg_puntuacion);
+
+        SharedPreferences sharedpreferences = getSharedPreferences(PantallaInicioActivity.PREFS_ULTIMA_PUNTUACION, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+
+        editor.putInt(PantallaInicioActivity.KEY_ULTIMA_PUNTUACION,this.puntuacion);
+
+        editor.commit();
     }
 
     @Override

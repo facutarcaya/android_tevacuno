@@ -7,6 +7,17 @@
     android:background="@color/covid"
     tools:context=".registrar.RegistrarActivity">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/fondo_app2_removebg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <TextView
         android:id="@+id/textViewPassword"
         android:layout_width="90dp"
@@ -15,6 +26,7 @@
         android:layout_marginTop="24dp"
         android:gravity="center"
         android:text="Contraseña:"
+        android:textColor="#171616"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewEmail" />
@@ -27,6 +39,7 @@
         android:layout_marginTop="24dp"
         android:gravity="center"
         android:text="Email:"
+        android:textColor="#171616"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewDni" />
@@ -39,6 +52,7 @@
         android:layout_marginTop="24dp"
         android:gravity="center"
         android:text="DNI:"
+        android:textColor="#171616"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewApellido" />
@@ -53,6 +67,10 @@
         android:ems="10"
         android:hint="@string/edit_apellido"
         android:inputType="textPersonName"
+        android:textColor="@color/textColor"
+        android:textColorHighlight="@color/textColorHighlight"
+        android:textColorHint="@color/textColorHint"
+        android:textColorLink="@color/textColorHint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textViewApellido"
         app:layout_constraintTop_toBottomOf="@+id/editTextNombre" />
@@ -65,6 +83,7 @@
         android:layout_marginTop="24dp"
         android:gravity="center"
         android:text="Apellido:"
+        android:textColor="#171616"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewNombre" />
@@ -77,6 +96,7 @@
         android:layout_marginTop="32dp"
         android:gravity="center"
         android:text="Nombre:"
+        android:textColor="#171616"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewCompleteDatos" />
@@ -91,6 +111,10 @@
         android:ems="10"
         android:hint="@string/edit_nombre"
         android:inputType="textPersonName"
+        android:textColor="@color/textColor"
+        android:textColorHighlight="@color/textColorHighlight"
+        android:textColorHint="@color/textColorHint"
+        android:textColorLink="@color/textColorHint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/textViewNombre"
@@ -106,6 +130,10 @@
         android:ems="10"
         android:hint="@string/edit_dni"
         android:inputType="number"
+        android:textColor="@color/textColor"
+        android:textColorHighlight="@color/textColorHighlight"
+        android:textColorHint="@color/textColorHint"
+        android:textColorLink="@color/textColorHint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textViewDni"
         app:layout_constraintTop_toBottomOf="@+id/editTextApellido" />
@@ -120,6 +148,10 @@
         android:ems="10"
         android:hint="@string/edit_mail"
         android:inputType="textEmailAddress"
+        android:textColor="@color/textColor"
+        android:textColorHighlight="@color/textColorHighlight"
+        android:textColorHint="@color/textColorHint"
+        android:textColorLink="@color/textColorHint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textViewEmail"
         app:layout_constraintTop_toBottomOf="@+id/editTextDni" />
@@ -148,6 +180,10 @@
         android:ems="10"
         android:hint="@string/edit_password"
         android:inputType="textPassword"
+        android:textColor="@color/textColor"
+        android:textColorHighlight="@color/textColorHighlight"
+        android:textColorHint="@color/textColorHint"
+        android:textColorLink="@color/textColorHint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textViewPassword"
         app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
@@ -173,8 +209,10 @@
         android:layout_width="wrap_content"
         android:layout_height="45dp"
         android:layout_marginTop="75dp"
-        android:text="@string/text_completar_datos_reg"
-        android:textSize="20sp"
+        android:fontFamily="@font/changa_one"
+        android:text="@string/buttonRegistrar"
+        android:textColor="#403939"
+        android:textSize="34sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -3,9 +3,11 @@ package com.example.micovid.pantallaprincipal;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.BatteryManager;
 import android.os.Bundle;
 import android.view.View;
@@ -31,7 +33,11 @@ public class PantallaInicioActivity extends AppCompatActivity {
     public static final String EXTRA_TOKEN = "com.example.micovid.TOKEN_INICIO";
     public static final String EXTRA_REFRESH = "com.example.micovid.REFRESH_INICIO";
 
+    public static final String PREFS_ULTIMA_PUNTUACION = "UltPuntuacion" ;
+    public static final String KEY_ULTIMA_PUNTUACION = "KeyUltimaPuntuacion";
+
     private TextView textViewBatteryLevel;
+    private TextView textViewUltPts;
     private ImageView imageViewBatteryLevel;
     private ProgressBar progressBarTokenRefresh;
     private Button buttonJugar;
@@ -53,6 +59,7 @@ public class PantallaInicioActivity extends AppCompatActivity {
         this.imageViewBatteryLevel = findViewById(R.id.imageViewBatteryLevel);
         this.progressBarTokenRefresh = findViewById(R.id.progressBarTokenRefresh);
         this.buttonJugar = findViewById(R.id.buttonJugar);
+        this.textViewUltPts = findViewById(R.id.textViewUltPts);
 
         updateBattery();
         reanudarPantalla();
@@ -92,7 +99,15 @@ public class PantallaInicioActivity extends AppCompatActivity {
             this.tiempoActual = System.currentTimeMillis();
         }
 
+        SharedPreferences sharedpreferences = getSharedPreferences(PREFS_ULTIMA_PUNTUACION, Context.MODE_PRIVATE);
 
+        int ultPreferencia = sharedpreferences.getInt(KEY_ULTIMA_PUNTUACION,-1);
+
+        if (ultPreferencia == -1) {
+            this.textViewUltPts.setText("No registrada");
+        } else {
+            this.textViewUltPts.setText(String.valueOf(ultPreferencia) + " dosis");
+        }
 
     }
 

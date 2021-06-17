@@ -4,8 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ACCEEA"
+    android:background="@color/covid"
     tools:context=".actividadprincipal.MainActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/fondo_app2_removebg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
         android:id="@+id/buttonMainLogin"
@@ -32,10 +43,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="0dp"
+        android:layout_width="411dp"
         android:layout_height="105dp"
-        android:layout_marginStart="144dp"
-        android:layout_marginEnd="144dp"
         android:layout_marginBottom="32dp"
         android:contentDescription="Android logo"
         app:layout_constraintBottom_toBottomOf="@id/groupName"
@@ -52,6 +61,7 @@
         android:layout_marginBottom="28dp"
         android:contentDescription="Group name"
         android:text="Grupo 5"
+        android:textColor="@color/textColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -70,7 +80,7 @@
         android:text="@string/app_name"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="#009688"
+        android:textColor="#04BDAC"
         android:textSize="40dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/buttonMainLogin"
