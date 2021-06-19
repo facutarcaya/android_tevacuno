@@ -165,6 +165,8 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     protected void onPause() {
         super.onPause();
         this.segundosPausa = System.currentTimeMillis() - this.segundos;
+        mSensorManager.unregisterListener(this);
+
     }
 
     public void validarLuz(float valorLuz) {
@@ -419,6 +421,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     }
 
     public void volverAlInicio() {
+        mSensorManager.unregisterListener(this);
         finish();
         Intent intent = new Intent(this, PantallaInicioActivity.class);
         intent.putExtra(EXTRA_TIEMPO,String.valueOf(this.tiempoActual));
