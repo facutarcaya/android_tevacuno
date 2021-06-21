@@ -12,6 +12,19 @@
         android:background="@color/covid">
 
         <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/bungee_inline"
+            android:text="Girando tu celular de la siguiente forma"
+            android:textColor="@color/textColor"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+        <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -26,23 +39,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="245dp"
-            android:layout_height="502dp"
-            android:layout_marginBottom="16dp"
-            android:src="@drawable/como_jugar_normal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
         <TextView
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:fontFamily="@font/bungee_inline"
-            android:text="Mantén la aguja roja sobre la aguja verde"
+            android:text="Coloca la aguja roja en la posición correcta de aplicación de la vacuna (90 grados)"
+            android:textAlignment="center"
             android:textColor="@color/textColor"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -59,7 +63,27 @@
             android:textColor="@color/textColor"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.454"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="253dp"
+            android:layout_height="249dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/vacunas"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="225dp"
+            android:layout_height="165dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/pos_celular"
+            app:layout_constraintTop_toBottomOf="@+id/textView10"
+            tools:layout_editor_absoluteX="93dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
