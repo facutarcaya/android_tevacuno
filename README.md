@@ -1,2 +1,2 @@
 # android_vacunar
- TP Android VacunAR
+ Juego en Android que permite probar el acelerómetro y el sensor de luminosidad del dispositivo
